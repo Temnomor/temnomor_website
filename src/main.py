@@ -24,12 +24,12 @@ app = FastAPI(
     debug=False
 )
 
+for router in api_routers:
+    app.include_router(router)
+
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.exception_handlers = exception_handlers_dict
-
-for router in api_routers:
-    app.include_router(router)
 
 
 logger.add(sink=log_to_telegram_bot, level='INFO')
