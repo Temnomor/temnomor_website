@@ -31,7 +31,7 @@ async def make_html_request(
 
 async def make_json_request(url: str) -> dict:
     async with ClientSession() as session:
-        async with session.get(url) as response:
+        async with session.post(url) as response:
             return await response.json(loads=orjson.loads)
 
 
@@ -80,7 +80,8 @@ async def get_schedule_for_object(
         timeout: int | float,
         schedule_for_group: bool = False):
 
-    api_url = f'{request.base_url}api/{api_endpoint}'
+    base_url = str(request.base_url).replace('http', 'https')
+    api_url = f'{base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
     json_dict_keys = json_dict.keys()
 

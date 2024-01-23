@@ -31,35 +31,36 @@ async def take_screenshot(url: str, path: str):
                 await browser.close()
 
 
-@router.get('/getGroupsData')
+@router.post('/getGroupsData')
 async def get_groups_data():
     return await json_response('groups.json')
 
 
-@router.get('/getLecturersData')
+@router.post('/getLecturersData')
 async def get_lecturers_data():
     return await json_response('preps.json')
 
 
-@router.get('/getCabinetsData')
+@router.post('/getCabinetsData')
 async def get_cabinets_data():
     return await json_response('cabs.json')
 
 
-@router.get('/getAcademicCalendarData')
+@router.post('/getAcademicCalendarData')
 async def get_academic_calendar_data():
     return await json_response('academic_calendar.json')
 
 
-@router.get('/getLecturersFullNameData')
+@router.post('/getLecturersFullNameData')
 async def get_lecturers_fullname_data():
     return await json_response('lecturers_fullname.json')
 
 
-@router.get('/getScreenshot')
+@router.api_route('/getScreenshot', methods=('GET', 'POST'))
 async def get_screenshot(request: Request, group: str):
     path = f'temp/{group}.png'
+    base_url = str(request.base_url).replace('http', 'https')
     await take_screenshot(
-        url=f'{request.base_url}api/groups?group={group}',
+        url=f'{base_url}api/groups?group={group}',
         path=path)
     return FileResponse(path=path)
