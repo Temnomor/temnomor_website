@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='index/css/index.css') }}">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script defer src="{{ url_for('static', path='index/js/index.js') }}"></script>
+    <script defer src="{{ url_for('static', path='index/js/weather.js') }}"></script>
+    <script defer src="{{ url_for('static', path='index/js/clock.js') }}"></script>
+    <title>Расписание</title>
+</head>
+<body>
+
+  <div class="infodiv" style="display: none;">
+    <div>
+      <center id="time_now"></center>
+    </div>
+    <div class="weather_wrapper">
+      <center id="weather_text"></center>
+    </div>
+  </div>
+
+  <div class="Temnomor_title">
+    <p>Temnomor</p>
+  </div>
+
+    <div class="wrapper" style="display: none;">
+      <div class="select-btn">
+        <span>Расписание групп</span>
+        <i class="uil uil-angle-down"></i>
+      </div>
+      <div class="content">
+        <div class="search">
+          <i class="uil uil-search"></i>
+          <input id="mainInput" spellcheck="false" type="text" placeholder="Поиск" maxlength="15" onkeyup="filterFunction()" onkeypress="NoWhitespace(event)">
+        </div>
+        <ul class="options" id="groups_list"></ul>
+      </div>
+    </div>
+
+    <div class="wrapper2" style="display: none;">
+      <div class="select-btn">
+        <span>Расписание преподавателей</span>
+        <i class="uil uil-angle-down"></i>
+      </div>
+      <div class="content">
+        <div class="search">
+          <i class="uil uil-search"></i>
+          <input id="mainInput2" spellcheck="false" type="text" placeholder="Поиск" maxlength="15" onkeyup="filterFunction2()" onkeypress="NoWhitespace(event)">
+        </div>
+        <ul class="options" id="lecturers_list"></ul>
+      </div>
+    </div>
+
+    <div class="wrapper3" style="display: none;">
+      <div class="select-btn">
+        <span>Расписание кабинетов</span>
+        <i class="uil uil-angle-down"></i>
+      </div>
+      <div class="content">
+        <div class="search">
+          <i class="uil uil-search"></i>
+          <input id="mainInput3" spellcheck="false" type="text" placeholder="Поиск" maxlength="15" onkeyup="filterFunction3()" onkeypress="NoWhitespace(event)">
+        </div>
+        <ul class="options" id="cabinets_list"></ul>
+      </div>
+    </div>
+
+    <div class="wrapper4">
+      <div class="select-btn">
+        <span>Узнать ФИО преподавателя</span>
+        <i class="uil uil-angle-down"></i>
+      </div>
+      <div class="content">
+        <div class="search">
+          <i class="uil uil-search"></i>
+          <input id="mainInput4" spellcheck="false" type="text" placeholder="Поиск" maxlength="15" onkeyup="filterFunction4()" onkeypress="NoWhitespace(event)">
+        </div>
+        <ul class="options" id="lecturers_fullname_list"></ul>
+      </div>
+    </div>
+
+    <p align="center" class="academic_calendar">
+      <a style="display: inline-block;" href="/api/academic_calendar" target="_blank" id="academic_calendar">Календарный учебный график</a>
+    </p>
+
+    <div class="allLinks">
+      <p align="center" class="tgbot_link">
+        Бот Temnomor в Telegram: 
+        <a style="display: inline-block;" href="https://t.me/temnomor_bot" target="_blank">t.me/temnomor_bot</a>
+      </p>
+
+      <p align="center" class="vkbot_link">
+        Бот Temnomor в ВКонтакте: 
+        <a style="display: inline-block;" href="https://vk.me/temnomor_bot" target="_blank">vk.com/temnomor_bot</a>
+      </p>
+
+      <p align="center" class="tgblog_link">
+        Блог команды Temnomor: 
+        <a style="display: inline-block;" href="https://t.me/temnomor" target="_blank">t.me/temnomor</a>
+      </p>
+    </div>
+</body>
+</html>
