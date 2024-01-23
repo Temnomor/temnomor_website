@@ -57,14 +57,10 @@ async def get_lecturers_fullname_data():
     return await json_response('lecturers_fullname.json')
 
 
-@router.post('/getScreenshot')
+@router.api_route('/getScreenshot', methods=('GET', 'POST'))
 async def get_screenshot(request: Request, group: str):
     path = f'temp/{group}.png'
-    if request.client.host == HOST_IP_ADDRESS:
-        await take_screenshot(
-            url=f'{request.base_url}api/groups?group={group}',
-            path=path
-        )
-        return FileResponse(path=path, filename=f'{group}.png')
-    else:
-        return RedirectResponse('/')
+    await take_screenshot(
+        url=f'{request.base_url}api/groups?group={group}',
+        path=path)
+    return FileResponse(path=path)
