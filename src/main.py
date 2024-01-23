@@ -9,6 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from loguru import logger
 
 from exceptions import exception_handlers_dict
@@ -23,6 +24,8 @@ app = FastAPI(
     redoc_url=None,
     debug=False
 )
+
+app.add_middleware(HTTPSRedirectMiddleware)
 
 for router in api_routers:
     app.include_router(router)
