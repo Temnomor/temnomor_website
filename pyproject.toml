@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "temnomor-website"
+version = "0.1.0"
+description = "temnomor_website"
+authors = ["ConfirmedPlayer <confirmedplayer@mail.ru>"]
+license = "GNU 3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.25.0"}
+jinja2 = "^3.1.3"
+loguru = "^0.7.2"
+apscheduler = "^3.10.4"
+playwright = "^1.40.0"
+aiohttp = {extras = ["speedups"], version = "^3.9.1"}
+beautifulsoup4 = "^4.12.3"
+aiofile = "^3.8.8"
+lxml = "^5.1.0"
+orjson = "^3.9.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

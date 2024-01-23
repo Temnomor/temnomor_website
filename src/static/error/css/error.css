@@ -1,0 +1,30 @@
+@font-face {
+    font-family: AntipastoPro;
+    src: url('../fonts/AntipastoPro-DemiBold.woff2') format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: AntipastoPro, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    /*background-color: #f4f4f4;*/
+    background: rgb(255, 255, 255);
+    background: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(248, 245, 255, 1) 36%, rgba(245, 246, 255, 1) 100%);
+}
+
+.paragraph-container {
+    text-align: center;
+    font-size: 40px;
+    color: #4285f4;
+}
+
+*
+{
+    user-select: none;
+}
