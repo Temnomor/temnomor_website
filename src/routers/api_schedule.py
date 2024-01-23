@@ -31,7 +31,7 @@ async def make_html_request(
 
 async def make_json_request(url: str) -> dict:
     async with ClientSession() as session:
-        async with session.post(url) as response:
+        async with session.get(url) as response:
             return await response.json(loads=orjson.loads)
 
 

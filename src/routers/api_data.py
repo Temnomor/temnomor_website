@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse, FileResponse, RedirectResponse, Response
+from fastapi.responses import JSONResponse, FileResponse
 from playwright.async_api import async_playwright
 from aiofile import async_open
 import os
-from constants import HOST_IP_ADDRESS
 import orjson
 
 
@@ -32,32 +31,32 @@ async def take_screenshot(url: str, path: str):
                 await browser.close()
 
 
-@router.post('/getGroupsData')
+@router.get('/getGroupsData')
 async def get_groups_data():
     return await json_response('groups.json')
 
 
-@router.post('/getLecturersData')
+@router.get('/getLecturersData')
 async def get_lecturers_data():
     return await json_response('preps.json')
 
 
-@router.post('/getCabinetsData')
+@router.get('/getCabinetsData')
 async def get_cabinets_data():
     return await json_response('cabs.json')
 
 
-@router.post('/getAcademicCalendarData')
+@router.get('/getAcademicCalendarData')
 async def get_academic_calendar_data():
     return await json_response('academic_calendar.json')
 
 
-@router.post('/getLecturersFullNameData')
+@router.get('/getLecturersFullNameData')
 async def get_lecturers_fullname_data():
     return await json_response('lecturers_fullname.json')
 
 
-@router.api_route('/getScreenshot', methods=('GET', 'POST'))
+@router.get('/getScreenshot')
 async def get_screenshot(request: Request, group: str):
     path = f'temp/{group}.png'
     await take_screenshot(
