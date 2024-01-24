@@ -190,6 +190,7 @@ async function insertScheduleURLs(json_obj, url)
         {
             case '/api/getGroupsData':
                 let groups_list = document.querySelector('#groups_list');
+                groups_list.innerHTML = '';
                 let group_href = `/api/groups?group=${key}`;
                 groups_list.innerHTML += `<a id="${key}" href="${group_href}" target="_blank" onclick="updateName()">${key}</a>`;
 
@@ -197,6 +198,7 @@ async function insertScheduleURLs(json_obj, url)
                 break;
             case '/api/getLecturersData':
                 let lecturers_list = document.querySelector('#lecturers_list');
+                lecturers_list.innerHTML = '';
                 let lecturers_href = `/api/lecturers?lecturer=${key}`;
                 lecturers_list.innerHTML += `<a href="${lecturers_href}" target="_blank" onclick="updateName2()">${key}</a>`;
 
@@ -204,6 +206,7 @@ async function insertScheduleURLs(json_obj, url)
                 break;
             case '/api/getCabinetsData':
                 let cabinets_list = document.querySelector('#cabinets_list');
+                cabinets_list.innerHTML = '';
                 let cabinets_href = `/api/cabinets?cabinet=${key}`;
                 cabinets_list.innerHTML += `<a href="${cabinets_href}" target="_blank" onclick="updateName3()">${key}</a>`;
                 document.querySelector('.wrapper3').style.display = '';
@@ -257,6 +260,7 @@ function place_top_groups_on_top() // ;)))))
 async function loadLecturersFullName()
 {
     let lecturers_fullname_list = document.querySelector('#lecturers_fullname_list');
+    lecturers_fullname_list.innerHTML = '';
 
     let response = await fetch('/api/getLecturersFullNameData', {method: 'POST'});
     let response_json = await response.json();

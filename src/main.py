@@ -33,9 +33,6 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 app.exception_handlers = exception_handlers_dict
 
 
-logger.add(sink=log_to_telegram_bot, level='INFO')
-
-
 @app.get('/favicon.ico')
 async def favicon():
     return FileResponse('static/favicon.ico')
@@ -77,6 +74,8 @@ async def main() -> None:
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(start_parsing_urls, 'interval', hours=6)
+
+    logger.add(sink=log_to_telegram_bot, level='INFO')
 
     try:
         if not os.path.exists('temp'):
