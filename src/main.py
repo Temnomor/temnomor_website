@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from typing import NoReturn
 
 import uvicorn
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler, BaseScheduler
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -42,6 +42,17 @@ async def favicon():
 
 
 @logger.catch
+async def clean_up(scheduler: BaseScheduler = None):
+    if scheduler and scheduler.running:
+        scheduler.shutdown(wait=False)
+        logger.info('Scheduler stopped')
+
+    if os.path.exists('temp'):
+        shutil.rmtree('temp', ignore_errors=True)
+        logger.info('Folder "temp" was deleted')
+
+
+@logger.catch
 async def run_server() -> NoReturn:
     config = uvicorn.Config(
         'main:app',
@@ -49,7 +60,8 @@ async def run_server() -> NoReturn:
         log_level='info',
         workers=9,
         ssl_keyfile=SSL_KEYFILE_PATH,
-        ssl_certfile=SSL_CERTFILE_PATH)
+        ssl_certfile=SSL_CERTFILE_PATH
+        )
 
     server = uvicorn.Server(config)
 
@@ -72,16 +84,16 @@ async def main() -> None:
 
         if not dont_parse_links:
             await start_parsing_urls()
+        else:
+            logger.info('-d | --dont_parse_links flag detected! Skipping first URL parsing')
 
         scheduler.start()
         logger.info('Scheduler started. Running server...')
 
         await run_server()
     finally:
-        if scheduler and scheduler.running:
-            scheduler.shutdown(wait=False)
-        if os.path.exists('temp'):
-            shutil.rmtree('temp', ignore_errors=True)
+        await clean_up(scheduler=scheduler)
+
 
 if __name__ == '__main__':
     asyncio.run(main())
