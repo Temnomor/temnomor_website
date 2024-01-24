@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 session_name="temnomor_website"
 
 # Путь к файлу Python-скрипта
-python_script="main.py"
+python_script="main.py -d"
 
 # Создаем новую screen-сессию
 screen -S "$session_name" -dm bash -c '
