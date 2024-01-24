@@ -190,7 +190,6 @@ async function insertScheduleURLs(json_obj, url)
         {
             case '/api/getGroupsData':
                 let groups_list = document.querySelector('#groups_list');
-                groups_list.innerHTML = '';
                 let group_href = `/api/groups?group=${key}`;
                 groups_list.innerHTML += `<a id="${key}" href="${group_href}" target="_blank" onclick="updateName()">${key}</a>`;
 
@@ -198,7 +197,6 @@ async function insertScheduleURLs(json_obj, url)
                 break;
             case '/api/getLecturersData':
                 let lecturers_list = document.querySelector('#lecturers_list');
-                lecturers_list.innerHTML = '';
                 let lecturers_href = `/api/lecturers?lecturer=${key}`;
                 lecturers_list.innerHTML += `<a href="${lecturers_href}" target="_blank" onclick="updateName2()">${key}</a>`;
 
@@ -206,7 +204,6 @@ async function insertScheduleURLs(json_obj, url)
                 break;
             case '/api/getCabinetsData':
                 let cabinets_list = document.querySelector('#cabinets_list');
-                cabinets_list.innerHTML = '';
                 let cabinets_href = `/api/cabinets?cabinet=${key}`;
                 cabinets_list.innerHTML += `<a href="${cabinets_href}" target="_blank" onclick="updateName3()">${key}</a>`;
                 document.querySelector('.wrapper3').style.display = '';
@@ -234,6 +231,10 @@ async function loadSchedule()
         '/api/getLecturersData',
         '/api/getCabinetsData'
     ];
+
+    document.querySelector('#groups_list').innerHTML = '';
+    document.querySelector('#lecturers_list').innerHTML = '';
+    document.querySelector('#cabinets_list').innerHTML = '';
 
     for (let url of URLs)
     {
