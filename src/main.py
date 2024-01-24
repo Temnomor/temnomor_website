@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 
-from constants import SSL_CERTFILE_PATH, SSL_KEYFILE_PATH
+from constants import SSL_CERTFILE_PATH, SSL_KEYFILE_PATH, HOST_PORT
 from exceptions import exception_handlers_dict
 from routers import api_routers
 from utils.logging_handler import log_to_telegram_bot
@@ -45,7 +45,7 @@ async def favicon():
 async def run_server() -> NoReturn:
     config = uvicorn.Config(
         'main:app',
-        port=8000,
+        port=HOST_PORT,
         log_level='info',
         workers=9,
         ssl_keyfile=SSL_KEYFILE_PATH,

@@ -19,12 +19,16 @@ HEADERS = {
     'Connection': 'keep-alive',
 }
 
+
+HOST_PORT = int(os.getenv('HOST_PORT'))
+
+
 TG_LOGGING_BOT_TOKEN = os.getenv('TG_LOGGING_BOT_TOKEN')
 TG_LOGGING_CHAT_ID = int(os.getenv('TG_LOGGING_CHAT_ID'))
 
-HOST_IP_ADDRESS = os.getenv('HOST_IP_ADDRESS')
 
 ADMINS_TELEGRAM_USERNAMES = os.getenv('ADMINS_TELEGRAM_USERNAMES')
+
 
 SSL_KEYFILE_PATH = os.getenv('SSL_KEYFILE_PATH')
 SSL_CERTFILE_PATH = os.getenv('SSL_CERTFILE_PATH')
