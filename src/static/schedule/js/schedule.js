@@ -5,7 +5,7 @@ document.getElementsByTagName('body')[0].appendChild(tgScript);
 let copyrightText = document.createElement('p');
 copyrightText.id = 'copyright';
 copyrightText.innerHTML = 'Данные взяты с сайта: ';
-copyrightText.style = 'font-size: 9pt; position: absolute; left: 0; bottom: 0; margin-left: 10px;';
+copyrightText.style = 'font-size: 8pt; position: absolute; left: 0; bottom: 0; margin-left: 10px;';
 document.getElementsByTagName('body')[0].appendChild(copyrightText);
 
 let copyrightHref = document.createElement('a');
