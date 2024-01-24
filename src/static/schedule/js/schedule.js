@@ -2,22 +2,6 @@ let tgScript = document.createElement('script');
 tgScript.src = 'https://telegram.org/js/telegram-web-app.js';
 document.getElementsByTagName('body')[0].appendChild(tgScript);
 
-let copyrightText = document.createElement('p');
-copyrightText.id = 'copyright';
-copyrightText.innerHTML = 'Данные взяты с сайта: ';
-copyrightText.style = 'font-size: 8pt; position: absolute; left: 0; bottom: 0; margin-left: 10px;';
-document.getElementsByTagName('body')[0].appendChild(copyrightText);
-
-let copyrightHref = document.createElement('a');
-copyrightHref.href = 'https://mnokol.tyuiu.ru/';
-copyrightHref.innerHTML = 'mnokol.tyuiu.ru'
-copyrightHref.style = 'font-size: 8pt';
-document.getElementById('copyright').appendChild(copyrightHref);
-
-
-document.documentElement.innerHTML = document.documentElement.innerHTML.replace('©', '');
-document.querySelector('.comm2').querySelector('a').remove();
-
 
 cab = document.getElementsByClassName('cab');
 
