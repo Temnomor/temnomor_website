@@ -9,9 +9,9 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from loguru import logger
 
+from constants import SSL_CERTFILE_PATH, SSL_KEYFILE_PATH
 from exceptions import exception_handlers_dict
 from routers import api_routers
 from utils.logging_handler import log_to_telegram_bot
@@ -24,8 +24,6 @@ app = FastAPI(
     redoc_url=None,
     debug=False
 )
-
-app.add_middleware(HTTPSRedirectMiddleware)
 
 for router in api_routers:
     app.include_router(router)
@@ -49,7 +47,9 @@ async def run_server() -> NoReturn:
         'main:app',
         port=8000,
         log_level='info',
-        workers=9)
+        workers=9,
+        ssl_keyfile=SSL_KEYFILE_PATH,
+        ssl_certfile=SSL_CERTFILE_PATH)
 
     server = uvicorn.Server(config)
 
@@ -69,11 +69,13 @@ async def main() -> None:
     try:
         if not os.path.exists('temp'):
             os.mkdir('temp')
+
         if not dont_parse_links:
-            ...
             await start_parsing_urls()
+
         scheduler.start()
         logger.info('Scheduler started. Running server...')
+
         await run_server()
     finally:
         if scheduler and scheduler.running:
