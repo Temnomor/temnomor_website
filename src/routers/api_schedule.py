@@ -80,8 +80,7 @@ async def get_schedule_for_object(
         timeout: int | float,
         schedule_for_group: bool = False):
 
-    base_url = str(request.base_url).replace('http', 'https')
-    api_url = f'{base_url}api/{api_endpoint}'
+    api_url = f'{request.base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
     json_dict_keys = json_dict.keys()
 

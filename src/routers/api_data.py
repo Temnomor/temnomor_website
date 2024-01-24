@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, FileResponse
-from playwright.async_api import async_playwright
 from aiofile import async_open
+from playwright.async_api import async_playwright
 import os
 import orjson
 
@@ -20,15 +20,21 @@ async def json_response(json_filename: str) -> JSONResponse:
 
 
 async def take_screenshot(url: str, path: str):
-    async with async_playwright() as context:
-        try:
-            browser = await context.chromium.launch()
-            page = await browser.new_page()
-            await page.goto(url)
-            await page.screenshot(path=path, full_page=True)
-        finally:
-            if browser and browser.is_connected():
-                await browser.close()
+    if not hasattr(take_screenshot, 'browser'):
+        playwright_context = await async_playwright().start()
+        browser = await playwright_context.chromium.launch()
+        setattr(take_screenshot, 'browser', browser)
+        setattr(take_screenshot, 'playwright_context', playwright_context)
+
+    browser = getattr(take_screenshot, 'browser')
+
+    try:
+        page = await browser.new_page()
+        await page.goto(url)
+        await page.screenshot(path=path, full_page=True)
+    finally:
+        if page and not page.is_closed():
+            await page.close()
 
 
 @router.post('/getGroupsData')
@@ -59,8 +65,7 @@ async def get_lecturers_fullname_data():
 @router.api_route('/getScreenshot', methods=('GET', 'POST'))
 async def get_screenshot(request: Request, group: str):
     path = f'temp/{group}.png'
-    base_url = str(request.base_url).replace('http', 'https')
     await take_screenshot(
-        url=f'{base_url}api/groups?group={group}',
+        url=f'{request.base_url}api/groups?group={group}',
         path=path)
     return FileResponse(path=path)
