@@ -256,7 +256,7 @@ function place_top_groups_on_top() // ;)))))
     groups_list.insertAdjacentElement('afterbegin', ispt_21_9_1);
     groups_list.insertAdjacentElement('afterbegin', pkst_20_9_2);
 }
-
+// ???
 async function loadLecturersFullName()
 {
     let lecturers_fullname_list = document.querySelector('#lecturers_fullname_list');
