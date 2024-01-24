@@ -280,8 +280,8 @@ async function main()
     await loadLecturersFullName();
     Array.from(document.querySelectorAll('.search')).forEach((item) => item.onkeypress = "NoWhiteSpace(event)");
     place_top_groups_on_top();
-    setInterval(loadSchedule, 60000);
-    setInterval(loadLecturersFullName, 60000);
+    //setInterval(loadSchedule, 60000);
+    //setInterval(loadLecturersFullName, 60000);
 }
 
 main();
