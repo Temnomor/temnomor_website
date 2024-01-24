@@ -22,6 +22,12 @@ document.querySelector('.comm2').querySelector('a').remove();
 cab = document.getElementsByClassName('cab');
 
 
+const urlParams = new URLSearchParams(window.location.search);
+const groupName = urlParams.get('group');
+let title = document.createElement('title');
+title.innerHTML = groupName;
+document.getElementsByTagName('body')[0].insertAdjacentElement('beforeend', title);
+
 function clean_cabs()
 {
     for (i = 0; i < cab.length; i++)
