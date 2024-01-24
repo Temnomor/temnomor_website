@@ -11,7 +11,7 @@ document.getElementsByTagName('body')[0].appendChild(copyrightText);
 let copyrightHref = document.createElement('a');
 copyrightHref.href = 'https://mnokol.tyuiu.ru/';
 copyrightHref.innerHTML = 'mnokol.tyuiu.ru'
-copyrightHref.style = 'font-size: 10pt';
+copyrightHref.style = 'font-size: 8pt';
 document.getElementById('copyright').appendChild(copyrightHref);
 
 
