@@ -93,7 +93,11 @@ async def main() -> None:
     scheduler = AsyncIOScheduler()
     scheduler.add_job(start_parsing_urls, 'interval', hours=6)
 
-    logger.add(sink=log_to_telegram_bot, level='INFO', format=LOGGER_FORMAT_TELEGRAM_BOT)
+    logger.add(
+        sink=log_to_telegram_bot,
+        level='INFO',
+        format=LOGGER_FORMAT_TELEGRAM_BOT,
+        backtrace=False)
 
     try:
         if not os.path.exists('temp'):

@@ -10,13 +10,16 @@ from constants import ADMINS_TELEGRAM_USERNAMES
 templates = Jinja2Templates(directory='templates')
 
 
-async def handle_404_error(request: Request, _):
+async def handle_404_error(*_):
     return RedirectResponse('/')
 
 
 async def handle_500_error(request: Request, exc: Exception):
-    logger.error(f'{ADMINS_TELEGRAM_USERNAMES}\n\nThere was an error on the Temnomor server. Code 500:')
+    logger.error(
+        f'{ADMINS_TELEGRAM_USERNAMES}\n\nThere was an error on the Temnomor server. Code 500:')
+
     logger.exception(exc)
+
     return templates.TemplateResponse(
         request=request,
         name='error/500.html'
