@@ -23,7 +23,7 @@ HEADERS = {
 }
 
 
-HOST_PORT = int(os.getenv('HOST_PORT'))
+HOST_PORT = int(os.getenv('HOST_PORT', 8081))
 
 
 TG_LOGGING_BOT_TOKEN = os.getenv('TG_LOGGING_BOT_TOKEN')
@@ -31,10 +31,10 @@ TG_LOGGING_CHAT_ID = int(os.getenv('TG_LOGGING_CHAT_ID'))
 
 LOGGER_FORMAT_TELEGRAM_BOT = (
     f'{PROJECT_NAME}\n\n'
-    '<level>{level: <8}</level>'
-    '<green>{time:DD.MM.YYYY HH:mm:ss}</green>\n'
-    '<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan>\n\n'
-    '<level>{message}</level>'
+    '{level: <8}'
+    '{time:DD.MM.YYYY HH:mm:ss}\n'
+    '{name}:{function}:{line}\n\n'
+    '{message}\n'
 )
 
 ADMINS_TELEGRAM_USERNAMES = os.getenv('ADMINS_TELEGRAM_USERNAMES')
