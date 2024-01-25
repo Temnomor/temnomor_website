@@ -11,9 +11,6 @@ templates = Jinja2Templates(directory='templates')
 
 
 async def handle_404_error(request: Request, _):
-    blacklist = ('.css', '.js')
-    if not any(word in str(request.url) for word in blacklist):
-        logger.info(f'{request.url} not found. Redirecting to /')
     return RedirectResponse('/')
 
 
