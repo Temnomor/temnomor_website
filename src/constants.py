@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+PROJECT_NAME = 'TEMNOMOR WEBSITE'
+
+
 SCHEDULE_BASE_URL = 'http://sh.mnokol.tyuiu.ru/shold/shedule/show_shedule.php?'
 
 SCHEDULE_FORM_URL = 'http://sh.mnokol.tyuiu.ru/shold/index2.php'
@@ -26,6 +29,13 @@ HOST_PORT = int(os.getenv('HOST_PORT'))
 TG_LOGGING_BOT_TOKEN = os.getenv('TG_LOGGING_BOT_TOKEN')
 TG_LOGGING_CHAT_ID = int(os.getenv('TG_LOGGING_CHAT_ID'))
 
+LOGGER_FORMAT_TELEGRAM_BOT = (
+    f'{PROJECT_NAME}\n\n'
+    '<level>{level: <8}</level>'
+    '<green>{time:DD.MM.YYYY HH:mm:ss}</green>\n'
+    '<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan>\n\n'
+    '<level>{message}</level>'
+)
 
 ADMINS_TELEGRAM_USERNAMES = os.getenv('ADMINS_TELEGRAM_USERNAMES')
 
