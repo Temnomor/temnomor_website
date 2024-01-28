@@ -24,7 +24,7 @@ Seconds = int
 
 async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
-        browser = await context.webkit.launch(headless=False)
+        browser = await context.webkit.launch()
         page = await browser.new_page()
         await page.set_extra_http_headers(HEADERS)
         await page.goto(url, timeout=timeout)
