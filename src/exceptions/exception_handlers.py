@@ -5,7 +5,7 @@ from fastapi import Request
 from loguru import logger
 from starlette.datastructures import QueryParams
 from exceptions import CollegeWebsiteError
-from typing import Iterable
+from urllib.parse import unquote
 from constants import ADMINS_TELEGRAM_USERNAMES
 
 
@@ -17,22 +17,10 @@ def to_url(
         reuqest_path: str,
         params: QueryParams):
 
-    return f'{request_method} {reuqest_path}{params}'
+    return unquote(f'{request_method} {reuqest_path}?{params}')
 
 
-async def handle_404_error(
-        request: Request,
-        _: Exception,
-        blacklist: Iterable[str] = ('.css', '.js', '.png', '.ico')):
-
-    requested_path = request.url.path
-    params = request.query_params
-    request_method = request.method
-
-    if not any(x in requested_path for x in blacklist):
-        url = to_url(request_method, requested_path, params)
-        logger.info(f'Not Found: {url}')
-
+async def handle_404_error(*_):
     return RedirectResponse('/')
 
 
