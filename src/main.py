@@ -2,11 +2,11 @@ import asyncio
 import os
 import shutil
 from argparse import ArgumentParser
-from typing import NoReturn, Awaitable, Iterable
+from typing import NoReturn
 
 import uvicorn
 from apscheduler.schedulers.asyncio import AsyncIOScheduler, BaseScheduler
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
@@ -36,23 +36,6 @@ app.exception_handlers = exception_handlers_dict
 @app.get('/favicon.ico')
 async def favicon():
     return FileResponse('static/favicon.ico')
-
-
-@app.middleware('http')
-async def logging_middleware(
-        request: Request,
-        call_next: Awaitable,
-        blacklist: Iterable[str] = ('.css', '.js', '.png', '.ico')):
-
-    response = await call_next(request)
-    requested_url = request.url.path
-
-    if not any(x in requested_url for x in blacklist):
-        request_method = request.method
-        status_code = response.status_code
-        logger.info(f'Requested: {request_method} {requested_url}\nStatus: {status_code}')
-
-    return response
 
 
 @logger.catch
