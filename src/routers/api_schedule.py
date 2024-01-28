@@ -1,5 +1,6 @@
 import asyncio
 import os
+import time
 
 import orjson
 from aiofile import async_open
@@ -7,16 +8,27 @@ from aiohttp import ClientSession, ClientTimeout
 from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from exceptions import CollegeWebsiteError
+from playwright.async_api import async_playwright
 
 from constants import HEADERS
-import time
+from exceptions import CollegeWebsiteError
 
 
 router = APIRouter(prefix='/api')
 
-
 templates = Jinja2Templates(directory='templates')
+
+
+Seconds = int
+
+
+async def playwright_get_html(url: str, timeout: Seconds):
+    async with async_playwright() as context:
+        browser = await context.webkit.launch(headless=False)
+        page = await browser.new_page()
+        await page.set_extra_http_headers(HEADERS)
+        await page.goto(url, timeout=timeout)
+        return await page.content()
 
 
 async def make_html_request(
@@ -73,12 +85,11 @@ def handle_timeout(request: Request, filename: str):
             "Timeout exceeded and there is no cached schedule or it's too old")
 
 
-async def get_schedule_for_object(
+async def get_schedule_for_group(
         request: Request,
         obj: str,
         api_endpoint: str,
-        timeout: int | float,
-        schedule_for_group: bool = False):
+        timeout: Seconds):
 
     api_url = f'{request.base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
@@ -86,10 +97,6 @@ async def get_schedule_for_object(
 
     if obj in json_dict_keys:
         try:
-            if not schedule_for_group:
-                if cached_schedule_exists(obj, 3600):
-                    return template_response(request, obj)
-
             html = await make_html_request(
                 json_dict.get(obj),
                 ClientTimeout(timeout))
@@ -106,42 +113,76 @@ async def get_schedule_for_object(
         return RedirectResponse('/')
 
 
+async def get_schedule_for_other(
+    request: Request,
+    obj: str,
+    api_endpoint: str,
+    timeout: Seconds
+):
+    api_url = f'{request.base_url}api/{api_endpoint}'
+    json_dict = await make_json_request(api_url)
+    json_dict_keys = json_dict.keys()
+
+    if obj in json_dict_keys:
+        try:
+            if cached_schedule_exists(obj, 3600):
+                return template_response(request, obj)
+
+            html = await playwright_get_html(
+                json_dict.get(obj),
+                timeout)
+
+            if 'lenta_m' not in html:
+                return handle_timeout(request, obj)
+
+        except asyncio.TimeoutError:
+            return handle_timeout(request, obj)
+
+        await dump_to_html_file(html, obj)
+        return template_response(request, obj)
+    else:
+        return RedirectResponse('/')
+
+
+async def schedule_is_available() -> bool:
+    ...
+
+
 @router.get('/groups')
 async def get_group_schedule(request: Request, group: str):
-    return await get_schedule_for_object(
+    return await get_schedule_for_group(
         request=request,
         obj=group,
         api_endpoint='getGroupsData',
-        timeout=15,
-        schedule_for_group=True
+        timeout=15
     )
 
 
 @router.get('/lecturers')
 async def get_lecturer_schedule(request: Request, lecturer: str):
-    return await get_schedule_for_object(
+    return await get_schedule_for_other(
         request=request,
         obj=lecturer,
         api_endpoint='getLecturersData',
-        timeout=240
+        timeout=240000
     )
 
 
 @router.get('/cabinets')
 async def get_cabinet_schedule(request: Request, cabinet: str):
-    return await get_schedule_for_object(
+    return await get_schedule_for_other(
         request=request,
         obj=cabinet,
         api_endpoint='getCabinetsData',
-        timeout=240
+        timeout=240000
     )
 
 
 @router.get('/academic_calendar')
 async def get_academic_calendar_schedule(request: Request):
-    return await get_schedule_for_object(
+    return await get_schedule_for_other(
         request=request,
         obj='academic_calendar',
         api_endpoint='getAcademicCalendarData',
-        timeout=240
+        timeout=240000
     )
