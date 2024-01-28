@@ -7,7 +7,7 @@ cab = document.getElementsByClassName('cab');
 
 
 const urlParams = new URLSearchParams(window.location.search);
-const groupName = urlParams.get('group');
+const groupName = urlParams.get('group') || urlParams.get('lecturer') || urlParams.get('cabinet') || 'Календарный учебный график';
 let title = document.createElement('title');
 title.innerHTML = groupName;
 document.getElementsByTagName('body')[0].insertAdjacentElement('beforeend', title);
