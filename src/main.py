@@ -38,6 +38,11 @@ async def favicon():
     return FileResponse('static/favicon.ico')
 
 
+@app.api_route('/robots.txt', methods=['GET', 'POST'])
+async def robots_txt():
+    return FileResponse('static/robots.txt')
+
+
 @logger.catch
 async def clean_up(scheduler: BaseScheduler = None):
     if scheduler and scheduler.running:
