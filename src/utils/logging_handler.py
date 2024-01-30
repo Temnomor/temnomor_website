@@ -11,7 +11,7 @@ telegram_send_message_url = f'https://api.telegram.org/bot{TG_LOGGING_BOT_TOKEN}
 
 async def send_post_and_get_response(url: str, params: dict[str, Any]) -> ClientResponse:
     async with ClientSession() as session:
-        async with session.post(url, params=params) as response:
+        async with session.post(url, params=params, ssl=False) as response:
             return response
 
 

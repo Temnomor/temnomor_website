@@ -37,13 +37,13 @@ async def make_html_request(
         headers: dict[str, str] = HEADERS) -> str:
 
     async with ClientSession(headers=headers, timeout=timeout) as session:
-        async with session.get(url) as response:
+        async with session.get(url, ssl=False) as response:
             return r''.join(await response.text())
 
 
 async def make_json_request(url: str) -> dict:
     async with ClientSession() as session:
-        async with session.post(url) as response:
+        async with session.post(url, ssl=False) as response:
             return await response.json(loads=orjson.loads)
 
 
