@@ -257,7 +257,15 @@ function place_top_groups_on_top() // ;)))))
     groups_list.insertAdjacentElement('afterbegin', ispt_21_9_1);
     groups_list.insertAdjacentElement('afterbegin', pkst_20_9_2);
 }
-// ???
+
+function copyToClipboard(elem)
+{
+  let lecturer = elem.srcElement.innerText;
+  navigator.clipboard.writeText(lecturer);
+  wrapper4.classList.remove('active');
+  alert(`ФИО преподавателя скопировано в буфер обмена`);
+}
+
 async function loadLecturersFullName()
 {
     let lecturers_fullname_list = document.querySelector('#lecturers_fullname_list');
@@ -269,9 +277,55 @@ async function loadLecturersFullName()
     for (let lecturer of response_json)
     {
         let elem = document.createElement('a');
+        elem.onclick = copyToClipboard;
         elem.innerHTML = lecturer;
         lecturers_fullname_list.appendChild(elem);
     }
+}
+
+function replaceLatinToCyrillic(event)
+{
+  let replace_dict = {
+    'q': 'й',
+    'w': 'ц',
+    'e': 'у',
+    'r': 'к',
+    't': 'е',
+    'y': 'н',
+    'u': 'г',
+    'i': 'ш',
+    'o': 'щ',
+    'p': 'з',
+    '[': 'х',
+    ']': 'ъ',
+    'a': 'ф',
+    's': 'ы',
+    'd': 'в',
+    'f': 'а',
+    'g': 'п',
+    'h': 'р',
+    'j': 'о',
+    'k': 'л',
+    'l': 'д',
+    ';': 'ж',
+    '\'': 'э',
+    'z': 'я',
+    'x': 'ч',
+    'c': 'с',
+    'v': 'м',
+    'b': 'и',
+    'n': 'т',
+    'm': 'ь',
+    ',': 'б',
+    '.': 'ю',
+    '`': 'ё'
+  };
+
+  if (replace_dict.hasOwnProperty(String(event.key).toLowerCase()) &&! event.ctrlKey)
+  {
+    event.target.value += replace_dict[event.key];
+    event.preventDefault();
+  }
 }
 
 async function main()
@@ -279,9 +333,8 @@ async function main()
     await loadSchedule();
     await loadLecturersFullName();
     Array.from(document.querySelectorAll('.search')).forEach((item) => item.onkeypress = "NoWhiteSpace(event)");
+    Array.from(document.querySelectorAll('.search')).forEach((item) => addEventListener('keydown', replaceLatinToCyrillic));
     place_top_groups_on_top();
-    //setInterval(loadSchedule, 60000);
-    //setInterval(loadLecturersFullName, 60000);
 }
 
 main();
