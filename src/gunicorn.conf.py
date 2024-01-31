@@ -3,7 +3,7 @@ from multiprocessing import cpu_count
 from constants import SSL_CERTFILE_PATH, SSL_KEYFILE_PATH, HOST_PORT
 
 
-wsgi_app = 'main:app'
+wsgi_app = 'main:main'
 
 workers = cpu_count() * 2 + 1
 
