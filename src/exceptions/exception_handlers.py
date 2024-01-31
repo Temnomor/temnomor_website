@@ -1,5 +1,5 @@
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from loguru import logger
@@ -21,7 +21,8 @@ def to_url(
 
 
 async def handle_404_error(*_):
-    return RedirectResponse('/')
+    response = '<script>window.location.href = "/";</script>'
+    return HTMLResponse(response, status_code=404)
 
 
 async def handle_500_error(request: Request, exc: Exception):
@@ -39,7 +40,8 @@ async def handle_500_error(request: Request, exc: Exception):
 
     return templates.TemplateResponse(
         request=request,
-        name='error/500.html'
+        name='error/500.html',
+        status_code=500
     )
 
 
