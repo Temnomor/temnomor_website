@@ -33,9 +33,14 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 app.exception_handlers = exception_handlers_dict
 
 
-@app.get('/favicon.ico')
-async def favicon():
+@app.api_route('/favicon.ico', methods=['GET', 'POST'])
+async def favicon_ico():
     return FileResponse('static/favicon.ico')
+
+
+@app.api_route('/favicon.png', methods=['GET', 'POST'])
+async def favicon_png():
+    return FileResponse('static/favicon.png')
 
 
 @app.api_route('/robots.txt', methods=['GET', 'POST'])
