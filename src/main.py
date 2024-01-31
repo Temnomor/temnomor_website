@@ -5,7 +5,6 @@ from argparse import ArgumentParser
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler, BaseScheduler
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 
@@ -29,21 +28,6 @@ for router in api_routers:
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.exception_handlers = exception_handlers_dict
-
-
-@app.api_route('/favicon.ico', methods=['GET', 'POST'])
-async def favicon_ico():
-    return FileResponse('static/favicon.ico')
-
-
-@app.api_route('/favicon.png', methods=['GET', 'POST'])
-async def favicon_png():
-    return FileResponse('static/favicon.png')
-
-
-@app.api_route('/robots.txt', methods=['GET', 'POST'])
-async def robots_txt():
-    return FileResponse('static/robots.txt')
 
 
 @logger.catch
@@ -88,5 +72,4 @@ async def main() -> None:
         await clean_up(scheduler=scheduler)
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+asyncio.run(main())

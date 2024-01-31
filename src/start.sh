@@ -2,17 +2,11 @@
 
 cd "$(dirname "$0")"
 
-# Имя screen-сессии
 session_name="temnomor_website"
 
-# Путь к файлу Python-скрипта
-python_script="main.py"
-
-# Создаем новую screen-сессию
 screen -S "$session_name" -dm bash -c '
 
-    # Запускаем Python-скрипт
-    /home/confi/.local/bin/poetry run python3 "'"$python_script"'"
+    /home/confi/.local/bin/poetry run gunicorn
 '
 
 echo "Screen session '$session_name' создана и запущена."
