@@ -117,7 +117,8 @@ async def get_schedule_for_other(
     request: Request,
     obj: str,
     api_endpoint: str,
-    timeout: Seconds
+    timeout: Seconds,
+    cache_since: int
 ):
     api_url = f'{request.base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
@@ -125,7 +126,7 @@ async def get_schedule_for_other(
 
     if obj in json_dict_keys:
         try:
-            if cached_schedule_exists(obj, 3600):
+            if cached_schedule_exists(obj, cache_since):
                 return template_response(request, obj)
 
             html = await playwright_get_html(
@@ -164,7 +165,8 @@ async def get_lecturer_schedule(request: Request, lecturer: str):
         request=request,
         obj=lecturer,
         api_endpoint='getLecturersData',
-        timeout=240000
+        timeout=240000,
+        cache_since=3600
     )
 
 
@@ -174,7 +176,8 @@ async def get_cabinet_schedule(request: Request, cabinet: str):
         request=request,
         obj=cabinet,
         api_endpoint='getCabinetsData',
-        timeout=240000
+        timeout=240000,
+        cache_since=3600
     )
 
 
@@ -184,5 +187,6 @@ async def get_academic_calendar_schedule(request: Request):
         request=request,
         obj='academic_calendar',
         api_endpoint='getAcademicCalendarData',
-        timeout=240000
+        timeout=240000,
+        cache_since=86400
     )
