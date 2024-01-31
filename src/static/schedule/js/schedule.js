@@ -39,3 +39,10 @@ let newText = '- замены. Для того чтобы увидеть изм�
 [1, 2, 3, 4, 5, 6].forEach(clean_cabs);
 try{document.querySelector("body > div.shedule_tek > div:nth-child(5)").style = 'display: none;';}catch{}
 try{document.getElementsByClassName('counter')[0].remove();}catch{}
+
+function reload_window()
+{
+  window.location.reload();
+}
+
+setInterval(reload_window, 300000);
