@@ -1,12 +1,14 @@
 #!/bin/bash
 
+
 cd "$(dirname "$0")"
 
 session_name="temnomor_website"
 
-screen -S "$session_name" -dm bash -c '
+python_script="main.py"
 
-    /home/confi/.local/bin/poetry run gunicorn
+screen -S "$session_name" -dm bash -c '
+    /home/confi/.local/bin/poetry run python3 "'"$python_script"'"
 '
 
 echo "Screen session '$session_name' создана и запущена."

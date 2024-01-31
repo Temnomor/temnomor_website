@@ -8,7 +8,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 
-from constants import LOGGER_FORMAT_TELEGRAM_BOT
+from gunicorn.app.base import BaseApplication
+from constants import LOGGER_FORMAT_TELEGRAM_BOT, OPTIONS
 from exceptions import exception_handlers_dict
 from routers import api_routers
 from utils.logging_handler import log_to_telegram_bot
@@ -28,6 +29,23 @@ for router in api_routers:
 app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.exception_handlers = exception_handlers_dict
+
+
+class StandaloneApplication(BaseApplication):
+
+    def __init__(self, app, options=None):
+        self.options = options or {}
+        self.application = app
+        super().__init__()
+
+    def load_config(self):
+        config = {key: value for key, value in self.options.items()
+                  if key in self.cfg.settings and value is not None}
+        for key, value in config.items():
+            self.cfg.set(key.lower(), value)
+
+    def load(self):
+        return self.application
 
 
 @logger.catch
@@ -69,11 +87,11 @@ async def main() -> None:
         scheduler.start()
         logger.info('Scheduler started. Running server...')
 
-        while True:
-            await asyncio.sleep(60)
+        StandaloneApplication(app=app, options=OPTIONS).run()
 
     finally:
         await clean_up(scheduler=scheduler)
 
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

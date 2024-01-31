@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from multiprocessing import cpu_count
 
 
 load_dotenv()
@@ -42,3 +43,22 @@ ADMINS_TELEGRAM_USERNAMES = os.getenv('ADMINS_TELEGRAM_USERNAMES')
 
 SSL_KEYFILE_PATH = os.getenv('SSL_KEYFILE_PATH')
 SSL_CERTFILE_PATH = os.getenv('SSL_CERTFILE_PATH')
+
+
+OPTIONS = {
+    'wsgi_app': 'main:main',
+
+    'workers': cpu_count() * 2 + 1,
+
+    'worker_class': 'uvicorn.workers.UvicornWorker',
+
+    'bind': f'127.0.0.1:{HOST_PORT}',
+
+    'forwarded_allow_ips': '*',
+
+    'keyfile': SSL_KEYFILE_PATH,
+
+    'certfile': SSL_CERTFILE_PATH,
+
+    'preload_app': True
+}
