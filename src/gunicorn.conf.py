@@ -16,3 +16,5 @@ forwarded_allow_ips = '*'
 keyfile = SSL_KEYFILE_PATH
 
 certfile = SSL_CERTFILE_PATH
+
+preload_app = True
