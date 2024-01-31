@@ -68,10 +68,12 @@ async def main() -> None:
 
         scheduler.start()
         logger.info('Scheduler started. Running server...')
-        yield app
+
+        while True:
+            await asyncio.sleep(60)
+
     finally:
         await clean_up(scheduler=scheduler)
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+asyncio.run(main())
