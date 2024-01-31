@@ -20,21 +20,12 @@ async def json_response(json_filename: str) -> JSONResponse:
 
 
 async def take_screenshot(url: str, path: str):
-    if not hasattr(take_screenshot, 'browser'):
-        playwright_context = await async_playwright().start()
-        browser = await playwright_context.chromium.launch()
-        setattr(take_screenshot, 'browser', browser)
-        setattr(take_screenshot, 'playwright_context', playwright_context)
-
-    browser = getattr(take_screenshot, 'browser')
-
-    try:
+    async with async_playwright() as context:
+        browser = await context.chromium.launch()
         page = await browser.new_page()
         await page.goto(url)
         await page.screenshot(path=path, full_page=True)
-    finally:
-        if page and not page.is_closed():
-            await page.close()
+        await browser.close()
 
 
 @router.post('/getGroupsData')
