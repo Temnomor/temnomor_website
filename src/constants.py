@@ -9,9 +9,10 @@ load_dotenv()
 PROJECT_NAME = 'TEMNOMOR WEBSITE'
 
 
-SCHEDULE_BASE_URL = 'http://sh.mnokol.tyuiu.ru/shold/shedule/show_shedule.php?'
+SCHEDULE_BASE_URL = 'http://sh.mnokol.tyuiu.ru/shs/all/open.php?'
 
 SCHEDULE_FORM_URL = 'http://sh.mnokol.tyuiu.ru/shold/index2.php'
+
 
 HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -43,22 +44,3 @@ ADMINS_TELEGRAM_USERNAMES = os.getenv('ADMINS_TELEGRAM_USERNAMES')
 
 SSL_KEYFILE_PATH = os.getenv('SSL_KEYFILE_PATH')
 SSL_CERTFILE_PATH = os.getenv('SSL_CERTFILE_PATH')
-
-
-OPTIONS = {
-    'wsgi_app': 'main:main',
-
-    'workers': cpu_count() * 2 + 1,
-
-    'worker_class': 'uvicorn.workers.UvicornWorker',
-
-    'bind': f'127.0.0.1:{HOST_PORT}',
-
-    'forwarded_allow_ips': '*',
-
-    'keyfile': SSL_KEYFILE_PATH,
-
-    'certfile': SSL_CERTFILE_PATH,
-
-    'preload_app': True
-}

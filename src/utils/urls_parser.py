@@ -41,9 +41,8 @@ async def parse_schedule_urls(
                     union = attrs.get('union')
                     sid = attrs.get('sid')
                     gr = attrs.get('value')
-                    year = attrs.get('year')
                     group_name = group_element.text
-                    final_url = f'{constants.SCHEDULE_BASE_URL}action=group&union={union}&sid={sid}&gr={gr}&year={year}&vr=1'
+                    final_url = f'{constants.SCHEDULE_BASE_URL}action=group&union={union}&sid={sid}&gr={gr}&vr=1'
                     parsed_urls[group_name] = final_url
         case 'preps' | 'cabs' as _type:
             elements = remove_spaces_from_iter(soup.find(id=_type).children)
