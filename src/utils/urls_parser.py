@@ -15,9 +15,11 @@ async def get_schedule_urls_html():
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
-        await page.set_extra_http_headers(constants.HEADERS)
-        await page.goto(constants.SCHEDULE_FORM_URL)
-        return r''.join(await page.content())
+        for url in constants.SCHEDULE_FORMS_URLS:
+            await page.set_extra_http_headers(constants.HEADERS)
+            await page.goto(url)
+            html = await page.content()
+            yield html
 
 
 def remove_spaces_from_iter(__iter: Iterable) -> filterfalse:
@@ -34,16 +36,12 @@ async def parse_schedule_urls(
     parsed_urls = {}
     match to_parse:
         case 'groups':
-            groups_elements = remove_spaces_from_iter(soup.find(id='groups').children)
+            groups_elements = remove_spaces_from_iter(soup.find_all('a', {'class': 'grlink'}))
             for group_element in groups_elements:
-                if group_element.has_attr('sid'):
-                    attrs = group_element.attrs
-                    union = attrs.get('union')
-                    sid = attrs.get('sid')
-                    gr = attrs.get('value')
+                if group_element.has_attr('href'):
+                    url = group_element.attrs.get('href')
                     group_name = group_element.text
-                    final_url = f'{constants.SCHEDULE_BASE_URL}action=group&union={union}&sid={sid}&gr={gr}&vr=1'
-                    parsed_urls[group_name] = final_url
+                    parsed_urls[group_name] = url
         case 'preps' | 'cabs' as _type:
             elements = remove_spaces_from_iter(soup.find(id=_type).children)
             element_with_information = soup.find(id='win_shed')
@@ -98,37 +96,42 @@ async def start_parsing_urls(
 
     logger.info('Starting parsing links')
 
-    html = await get_schedule_urls_html()
+    html = get_schedule_urls_html()
 
-    while not any(group in html for group in ('(9)', '(11)')):
-        logger.warning('Groups not found in HTML! Trying again...')
-        await asyncio.sleep(sleep_delay)
-        html = await get_schedule_urls_html()
+    all_parsed_urls = {}
 
-    parsed_urls, filename = await parse_schedule_urls(html, to_parse='groups')
-    await dump_parsed_urls_to_json_file(parsed_urls, filename)
+    async for element in html:
+        while not any(group in element for group in ('(9)', '(11)')):
+            logger.warning('Groups not found in HTML! Trying again...')
+            await asyncio.sleep(sleep_delay)
+            html = get_schedule_urls_html()
+
+        parsed_urls, filename = await parse_schedule_urls(element, to_parse='groups')
+        all_parsed_urls |= parsed_urls
+
+    await dump_parsed_urls_to_json_file(all_parsed_urls, filename)
     logger.success('The groups were successfully parsed')
 
-    while 'prep0' not in html:
-        logger.warning('Lecturers not found in HTML! Trying again...')
-        await asyncio.sleep(sleep_delay)
-        html = await get_schedule_urls_html()
+    # while 'prep0' not in html:
+    #     logger.warning('Lecturers not found in HTML! Trying again...')
+    #     await asyncio.sleep(sleep_delay)
+    #     html = await get_schedule_urls_html()
 
-    parsed_urls, filename = await parse_schedule_urls(html, to_parse='preps')
-    await dump_parsed_urls_to_json_file(parsed_urls, filename)
-    logger.success('The lecturers were successfully parsed')
+    # parsed_urls, filename = await parse_schedule_urls(html, to_parse='preps')
+    # await dump_parsed_urls_to_json_file(parsed_urls, filename)
+    # logger.success('The lecturers were successfully parsed')
 
-    parsed_urls, filename = await parse_schedule_urls(html, to_parse='academic_calendar')
-    await dump_parsed_urls_to_json_file(parsed_urls, filename)
-    logger.success('The academic calendar were successfully parsed')
+    # parsed_urls, filename = await parse_schedule_urls(html, to_parse='academic_calendar')
+    # await dump_parsed_urls_to_json_file(parsed_urls, filename)
+    # logger.success('The academic calendar were successfully parsed')
 
-    while '13-212к' not in html:
-        if cabinets_not_found_skip:
-            return
-        logger.warning('Cabinets not found in HTML! Trying again...')
-        await asyncio.sleep(sleep_delay)
-        html = await get_schedule_urls_html()
+    # while '13-212к' not in html:
+    #     if cabinets_not_found_skip:
+    #         return
+    #     logger.warning('Cabinets not found in HTML! Trying again...')
+    #     await asyncio.sleep(sleep_delay)
+    #     html = await get_schedule_urls_html()
 
-    parsed_urls, filename = await parse_schedule_urls(html, to_parse='cabs')
-    await dump_parsed_urls_to_json_file(parsed_urls, filename)
-    logger.success('The cabinets were successfully parsed')
+    # parsed_urls, filename = await parse_schedule_urls(html, to_parse='cabs')
+    # await dump_parsed_urls_to_json_file(parsed_urls, filename)
+    # logger.success('The cabinets were successfully parsed')
