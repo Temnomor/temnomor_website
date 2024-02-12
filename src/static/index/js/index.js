@@ -262,7 +262,7 @@ function copyToClipboard(elem)
 {
   let lecturer = elem.srcElement.innerText;
   navigator.clipboard.writeText(lecturer);
-  wrapper4.classList.remove('active');
+  selectBtn4.click();
   alert(`ФИО преподавателя скопировано в буфер обмена`);
 }
 

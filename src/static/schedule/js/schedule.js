@@ -23,10 +23,10 @@ function clean_cabs()
     }
 }
 
-document.querySelector('body').children[0].remove()
-document.querySelector('body').children[0].remove()
-document.querySelector('body').children[0].remove()
-document.querySelector('body').children[0].remove()
+document.querySelector('body').children[0].remove();
+document.querySelector('body').children[0].remove();
+document.querySelector('body').children[0].remove();
+document.querySelector('body').children[0].remove();
 //Array.from(document.getElementsByClassName('comm3 zamena')).forEach(function (item) {item.addEventListener('click', function () {alert(item.title)})});
 
 
