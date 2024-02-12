@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from multiprocessing import cpu_count
 
 
 load_dotenv()
@@ -11,7 +10,13 @@ PROJECT_NAME = 'TEMNOMOR WEBSITE'
 
 SCHEDULE_BASE_URL = 'http://sh.mnokol.tyuiu.ru/shs/all/open.php?'
 
-SCHEDULE_FORM_URL = 'http://sh.mnokol.tyuiu.ru/shold/index2.php'
+SCHEDULE_FORMS_URLS = (
+    'http://77.242.109.185/aies/sh.php',
+    'http://77.242.109.185/mpn/sh.php',
+    'http://77.242.109.185/ngo/sh.php',
+    'http://77.242.109.185/sonh_po/sh.php',
+    'http://77.242.109.185/zo/sh.php'
+)
 
 
 HEADERS = {
