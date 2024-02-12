@@ -25,7 +25,6 @@ async def take_screenshot(url: str, path: str):
         page = await browser.new_page()
         await page.goto(url)
         await page.screenshot(path=path, full_page=True)
-        await browser.close()
 
 
 @router.post('/getGroupsData')

@@ -64,9 +64,9 @@ async def run_server() -> NoReturn:
 @logger.catch
 async def main() -> None:
     arg_parser = ArgumentParser()
-    arg_parser.add_argument('-d', '--dont_parse_links', action='store_true')
+    arg_parser.add_argument('-p', '--parse_links', action='store_true')
     args = arg_parser.parse_args()
-    dont_parse_links = args.dont_parse_links
+    parse_links = args.parse_links
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(start_parsing_urls, 'interval', hours=6)
@@ -81,10 +81,11 @@ async def main() -> None:
         if not os.path.exists('temp'):
             os.mkdir('temp')
 
-        if not dont_parse_links:
+        if parse_links:
+            logger.info('-p | --parse_links flag detected!')
             await start_parsing_urls()
         else:
-            logger.info('-d | --dont_parse_links flag detected! Skipping first URL parsing')
+            logger.info('Skipping first URL parsing')
 
         scheduler.start()
         logger.info('Scheduler started. Running server...')
