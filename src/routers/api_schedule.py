@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from playwright.async_api import async_playwright
 
-from constants import HEADERS
+from constants import SCHEDULE_GROUP_HEADERS
 from exceptions import CollegeWebsiteError
 
 
@@ -26,7 +26,7 @@ async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
-        await page.set_extra_http_headers(HEADERS)
+        await page.set_extra_http_headers(SCHEDULE_GROUP_HEADERS)
         await page.goto(url, timeout=timeout)
         return await page.content()
 
@@ -34,7 +34,7 @@ async def playwright_get_html(url: str, timeout: Seconds):
 async def make_html_request(
         url: str,
         timeout: ClientTimeout,
-        headers: dict[str, str] = HEADERS) -> str:
+        headers: dict[str, str] = SCHEDULE_GROUP_HEADERS) -> str:
 
     async with ClientSession(headers=headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
