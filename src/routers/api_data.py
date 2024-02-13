@@ -23,7 +23,7 @@ async def take_screenshot(url: str, path: str):
     async with async_playwright() as context:
         browser = await context.chromium.launch()
         page = await browser.new_page()
-        await page.goto(url)
+        await page.goto(url, timeout=0)
         await page.screenshot(path=path, full_page=True)
 
 
