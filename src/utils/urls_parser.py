@@ -17,7 +17,7 @@ async def get_schedule_urls_html():
         page = await browser.new_page()
         for url in constants.SCHEDULE_FORMS_URLS:
             await page.set_extra_http_headers(constants.SCHEDULE_FORM_HEADERS)
-            await page.goto(url)
+            await page.goto(url, timeout=0)
             html = await page.content()
             yield html
 
