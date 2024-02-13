@@ -1,6 +1,6 @@
 User-agent: *
-Disallow: /api/groups/
-Disallow: /api/lecturers/
-Disallow: /api/cabinets/
-Disallow: /api/academic_calendar/
-Disallow: /api/getScreenshot/
+Disallow: /api/groups
+Disallow: /api/lecturers
+Disallow: /api/cabinets
+Disallow: /api/academic_calendar
+Disallow: /api/getScreenshot
