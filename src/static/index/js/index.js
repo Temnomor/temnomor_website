@@ -261,8 +261,10 @@ function place_top_groups_on_top() // ;)))))
 function copyToClipboard(elem)
 {
   let lecturer = elem.srcElement.innerText;
+  searchInp4.value = lecturer;
+  searchInp4.select();
+  searchInp4.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(lecturer);
-  selectBtn4.click();
   alert(`ФИО преподавателя скопировано в буфер обмена`);
 }
 
