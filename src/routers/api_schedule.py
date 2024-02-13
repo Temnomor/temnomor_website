@@ -28,7 +28,8 @@ async def playwright_get_html(url: str, timeout: Seconds):
         page = await browser.new_page()
         await page.set_extra_http_headers(SCHEDULE_GROUP_HEADERS)
         await page.goto(url, timeout=timeout)
-        return await page.content()
+        html = r''.join(await page.content())
+        return html.replace('window.stop', '')
 
 
 async def make_html_request(
@@ -38,7 +39,8 @@ async def make_html_request(
 
     async with ClientSession(headers=headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
-            return r''.join(await response.text())
+            html = r''.join(await response.text())
+            return html.replace('window.stop', '')
 
 
 async def make_json_request(url: str) -> dict:
