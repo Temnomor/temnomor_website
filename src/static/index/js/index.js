@@ -265,7 +265,6 @@ function copyToClipboard(elem)
   searchInp4.select();
   searchInp4.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(lecturer);
-  alert(`ФИО преподавателя (${lecturer}) скопировано в буфер обмена`);
 }
 
 async function loadLecturersFullName()
