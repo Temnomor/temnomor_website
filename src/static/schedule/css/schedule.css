@@ -78,9 +78,9 @@ body
 
 #notifier
 {
-    font-size: 12px;
-    color:#aaaaaa;
+    font-size: 10pt;
     padding-bottom:5px;
+	text-align: left;
 }
 
 #dt_ot
@@ -573,20 +573,20 @@ a.selclose:hover
 	height:50px;
 }
 
-#notifier
+/*#notifier
 {
 	display: none;
-}
+}*/
 
 div.head:nth-child(2)
 {
 	display: none;
 }
 
-div:nth-child(4)
+/*div:nth-child(4)
 {
 	display: none;
-}
+}*/
 
 div:nth-child(5)
 {
@@ -595,7 +595,7 @@ div:nth-child(5)
 
 .prep
 {
-        display: block !important
+    display: block !important
 }
 
 
@@ -606,7 +606,7 @@ div:nth-child(5)
 		display: inline-table;
 	}
 
-	.main_table, .comm2, .head
+	.main_table, .comm2, .head, #notifier
 	{
 		zoom: 325%;
 	}
