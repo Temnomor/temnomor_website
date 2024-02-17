@@ -573,25 +573,6 @@ a.selclose:hover
 	height:50px;
 }
 
-/*#notifier
-{
-	display: none;
-}*/
-
-div.head:nth-child(2)
-{
-	display: none;
-}
-
-/*div:nth-child(4)
-{
-	display: none;
-}*/
-
-div:nth-child(5)
-{
-	display: none !important;
-}
 
 .prep
 {
