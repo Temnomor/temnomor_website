@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 import time
 
 import orjson
@@ -22,6 +23,11 @@ templates = Jinja2Templates(directory='templates')
 Seconds = int
 
 
+regex = re.compile(
+    r'<script.*?/script>|<link.*?>|<img.*?>|<style.*?/style>|<iframe.*?/iframe>',
+    flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
+
+
 async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
@@ -29,7 +35,7 @@ async def playwright_get_html(url: str, timeout: Seconds):
         await page.set_extra_http_headers(SCHEDULE_GROUP_HEADERS)
         await page.goto(url, timeout=timeout)
         html = r''.join(await page.content())
-        return html.replace('window.stop', '')
+        return regex.sub('', html)
 
 
 async def make_html_request(
@@ -40,7 +46,7 @@ async def make_html_request(
     async with ClientSession(headers=headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
             html = r''.join(await response.text())
-            return html.replace('window.stop', '')
+            return regex.sub('', html)
 
 
 async def make_json_request(url: str) -> dict:
