@@ -32,9 +32,9 @@ async def send_message_to_admins_chat(
 async def log_to_telegram_bot(
         log: Any | str,
         msg_length_limit: int = 4096) -> None:
-    '''
+    """
     sink for loguru
-    '''
+    """
 
     if len(log) > msg_length_limit:
         messages = (log[i:i + msg_length_limit] for i in range(0, len(log), msg_length_limit))
