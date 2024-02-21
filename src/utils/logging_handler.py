@@ -1,12 +1,14 @@
 import asyncio
 from typing import Any
 
-from aiohttp import ClientSession, ClientResponse
+from aiohttp import ClientResponse, ClientSession
 
 from constants import TG_LOGGING_BOT_TOKEN, TG_LOGGING_CHAT_ID
 
-
 telegram_send_message_url = f'https://api.telegram.org/bot{TG_LOGGING_BOT_TOKEN}/sendMessage'
+
+
+lock = asyncio.Lock()
 
 
 async def send_post_and_get_response(url: str, params: dict[str, Any]) -> ClientResponse:
@@ -19,14 +21,17 @@ async def send_message_to_admins_chat(
         message: str,
         chat_id: int | str = TG_LOGGING_CHAT_ID) -> None:
 
-    params = {'chat_id': chat_id,
-              'text': message}
+    async with lock:
+        params = {
+            'chat_id': chat_id,
+            'text': message
+        }
 
-    response = await send_post_and_get_response(telegram_send_message_url, params)
-    while not response.ok:
-        delay = int(response.headers.get('Retry-After', 60))
-        await asyncio.sleep(delay)
         response = await send_post_and_get_response(telegram_send_message_url, params)
+        while not response.ok:
+            delay = int(response.headers.get('Retry-After', 60))
+            await asyncio.sleep(delay)
+            response = await send_post_and_get_response(telegram_send_message_url, params)
 
 
 async def log_to_telegram_bot(
