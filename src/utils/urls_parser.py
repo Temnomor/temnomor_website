@@ -27,8 +27,10 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
                 document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
                 """
             )
-            await asyncio.sleep(1)
             frame = page.frame(name='new_frame')
+            while frame is None:
+                await asyncio.sleep(1)
+                frame = page.frame(name='new_frame')
             await frame.wait_for_load_state('networkidle')
             html = await frame.content()
             yield html, url
