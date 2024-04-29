@@ -8,38 +8,67 @@ load_dotenv()
 PROJECT_NAME = 'TEMNOMOR WEBSITE'
 
 
-SCHEDULE_BASE_URL = 'http://sh.mnokol.tyuiu.ru/shs/all/open.php?'
-
 SCHEDULE_FORMS_URLS = (
-    'http://sh.mnokol.tyuiu.ru/shs/aies/sh.php',
-    'http://sh.mnokol.tyuiu.ru/shs/mpn/sh.php',
-    'http://sh.mnokol.tyuiu.ru/shs/ngo/sh.php',
-    'http://sh.mnokol.tyuiu.ru/shs/sonh_po/sh.php',
-    'http://sh.mnokol.tyuiu.ru/shs/zo/sh.php'
+    'https://coworking.tyuiu.ru/shs/aies_t/aies.php',
+    'https://coworking.tyuiu.ru/shs/mpn_t/mpn.php',
+    'https://coworking.tyuiu.ru/shs/ngo_t/ngo.php',
+    'https://coworking.tyuiu.ru/shs/sonh_po_t/sonh_po.php',
+    'https://coworking.tyuiu.ru/shs/zo_t/zo.php'
 )
 
 
 SCHEDULE_GROUP_HEADERS = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'Accept-Language': 'en-US,en;q=0.9,ru;q=0.8,tg;q=0.7',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'Pragma': 'no-cache',
-    'Referer': '',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+    'cache-control': 'no-cache',
+    'pragma': 'no-cache',
+    'priority': 'u=0, i',
+    'referer': 'https://coworking.tyuiu.ru/shs/ngo_t/ngo.php',
+    'sec-ch-ua': '"Chromium";v="124", "Microsoft Edge";v="124", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'iframe',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
 }
 
 SCHEDULE_FORM_HEADERS = {
-    'Host': 'sh.mnokol.tyuiu.ru',
-    'Referer': 'http://mnokol.tyuiu.ru/',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'Upgrade-Insecure-Requests': '1',
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache',
-    'Accept-Language': 'en-US,en;q=0.9,ru;q=0.8,tg;q=0.7, en-US',
-    'Connection': 'keep-alive',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/605.1.15 (KHTML, like Gecko)',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+    'cache-control': 'no-cache',
+    'pragma': 'no-cache',
+    'priority': 'u=0, i',
+    'referer': 'https://coworking.tyuiu.ru/shs/shedule.php',
+    'sec-ch-ua': '"Chromium";v="124", "Microsoft Edge";v="124", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'iframe',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
+}
+
+SCHEDULE_LECTURERS_HEADERS = {
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+    'cache-control': 'no-cache',
+    'pragma': 'no-cache',
+    'priority': 'u=0, i',
+    'referer': 'https://coworking.tyuiu.ru/shs/prep/prep.php',
+    'sec-ch-ua': '"Chromium";v="124", "Microsoft Edge";v="124", "Not-A.Brand";v="99"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'iframe',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'same-origin',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
 }
 
 

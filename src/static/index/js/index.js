@@ -228,13 +228,11 @@ async function loadSchedule()
 {
     let URLs = [
         '/api/getGroupsData',
-        '/api/getLecturersData',
-        '/api/getCabinetsData'
+        '/api/getLecturersData'
     ];
 
     document.querySelector('#groups_list').innerHTML = '';
     document.querySelector('#lecturers_list').innerHTML = '';
-    document.querySelector('#cabinets_list').innerHTML = '';
 
     for (let url of URLs)
     {

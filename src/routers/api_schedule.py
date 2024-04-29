@@ -11,7 +11,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from playwright.async_api import async_playwright
 
-from constants import SCHEDULE_GROUP_HEADERS
+from constants import SCHEDULE_GROUP_HEADERS, SCHEDULE_LECTURERS_HEADERS
 from exceptions import CollegeWebsiteError
 
 
@@ -24,7 +24,7 @@ Seconds = int
 
 
 regex = re.compile(
-    r'<script.*?/script>|<link.*?>|<img.*?>|<style.*?/style>|<iframe.*?/iframe>',
+    r'<script.*?/script>|<link.*?>|<img.*?>|<style.*?/style>|<iframe.*?/iframe>|<embed.*?>',
     flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
 
 
@@ -32,9 +32,19 @@ async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
+        await page.goto('https://mnokol.tyuiu.ru/site/', timeout=0)
         await page.set_extra_http_headers(SCHEDULE_GROUP_HEADERS)
-        await page.goto(url, timeout=timeout)
-        html = r''.join(await page.content())
+        await page.evaluate(
+            f"""
+            var spn = document.createElement('iframe');
+            spn.src = '{url}';
+            document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
+            """
+        )
+        await asyncio.sleep(1)
+        frame = page.frame(name='new_frame')
+        await frame.wait_for_load_state('networkidle')
+        html = r''.join(await frame.content())
         return regex.sub('', html)
 
 
@@ -138,8 +148,15 @@ async def get_schedule_for_other(
                 return template_response(request, obj)
 
             html = await playwright_get_html(
-                json_dict.get(obj),
-                timeout)
+                url=json_dict.get(obj),
+                timeout=timeout
+            )
+            
+            #html = await make_html_request(
+            #    url=json_dict.get(obj),
+            #    timeout=ClientTimeout(timeout),
+            #    headers=SCHEDULE_LECTURERS_HEADERS
+            #)
 
             if 'lenta_m' not in html:
                 return handle_timeout(request, obj)
@@ -174,7 +191,7 @@ async def get_lecturer_schedule(request: Request, lecturer: str):
         obj=lecturer,
         api_endpoint='getLecturersData',
         timeout=240000,
-        cache_since=3600
+        cache_since=100
     )
 
 
@@ -185,7 +202,7 @@ async def get_cabinet_schedule(request: Request, cabinet: str):
         obj=cabinet,
         api_endpoint='getCabinetsData',
         timeout=240000,
-        cache_since=3600
+        cache_since=100
     )
 
 

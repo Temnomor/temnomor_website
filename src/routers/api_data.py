@@ -37,11 +37,6 @@ async def get_lecturers_data():
     return await json_response('preps.json')
 
 
-@router.post('/getCabinetsData')
-async def get_cabinets_data():
-    return await json_response('cabs.json')
-
-
 @router.post('/getAcademicCalendarData')
 async def get_academic_calendar_data():
     return await json_response('academic_calendar.json')
