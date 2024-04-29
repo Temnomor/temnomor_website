@@ -31,20 +31,10 @@ regex = re.compile(
 async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
-        page = await browser.new_page()
-        await page.goto('https://mnokol.tyuiu.ru/site/', timeout=0)
-        await page.set_extra_http_headers(SCHEDULE_GROUP_HEADERS)
-        await page.evaluate(
-            f"""
-            var spn = document.createElement('iframe');
-            spn.src = '{url}';
-            document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
-            """
-        )
-        await asyncio.sleep(1)
-        frame = page.frame(name='new_frame')
-        await frame.wait_for_load_state('networkidle')
-        html = r''.join(await frame.content())
+        page = await browser.new_page(java_script_enabled=False)
+        await page.set_extra_http_headers(SCHEDULE_LECTURERS_HEADERS)
+        await page.goto(url, timeout=timeout)
+        html = r''.join(await page.content())
         return regex.sub('', html)
 
 
@@ -191,7 +181,7 @@ async def get_lecturer_schedule(request: Request, lecturer: str):
         obj=lecturer,
         api_endpoint='getLecturersData',
         timeout=240000,
-        cache_since=100
+        cache_since=3600
     )
 
 
