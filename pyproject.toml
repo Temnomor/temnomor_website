@@ -5,6 +5,7 @@ description = "temnomor_website"
 authors = ["ConfirmedPlayer <confirmedplayer@mail.ru>"]
 license = "GNU 3.0"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
