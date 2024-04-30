@@ -75,19 +75,20 @@ async def parse_schedule_urls(
             elements = remove_spaces_from_iter(soup.find(id='preps').children)
             element_with_information = soup.find(id='win_shed')
             for element in elements:
-                count = int(element_with_information.attrs.get('count'))
-                object_id = element.attrs.get('value')
-                object_name = element.text
-                base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'sh', group_base_url) + '?'
-                url = f'{base_url}action=prep&prep={object_id}&vr=1&count={count}'
-                other_params = ''
-                for i in range(count):
-                    schedule_attr = element_with_information.attrs.get(f'shedule{i}')
-                    union_attr = element_with_information.attrs.get(f'union{i}')
-                    year_attr = element_with_information.attrs.get(f'year{i}')
-                    other_params += f'&shed[{i}]={schedule_attr}&union[{i}]={union_attr}&year[{i}]={year_attr}'
-                url += other_params
-                parsed_urls[object_name] = url
+                if not element.has_attr('hidden'):
+                    count = int(element_with_information.attrs.get('count'))
+                    object_id = element.attrs.get('value')
+                    object_name = element.text
+                    base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'sh', group_base_url) + '?'
+                    url = f'{base_url}action=prep&prep={object_id}&vr=1&count={count}'
+                    other_params = ''
+                    for i in range(count):
+                        schedule_attr = element_with_information.attrs.get(f'shedule{i}')
+                        union_attr = element_with_information.attrs.get(f'union{i}')
+                        year_attr = element_with_information.attrs.get(f'year{i}')
+                        other_params += f'&shed[{i}]={schedule_attr}&union[{i}]={union_attr}&year[{i}]={year_attr}'
+                    url += other_params
+                    parsed_urls[object_name] = url
         case 'academic_calendar':
             element_with_information = soup.find(id='win_shed')
             count = int(element_with_information.attrs.get('count'))
