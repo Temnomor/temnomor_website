@@ -34,8 +34,8 @@ async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
-        await page.goto('https://coworking.tyuiu.ru', timeout=timeout)
         await page.set_extra_http_headers(SCHEDULE_LECTURERS_HEADERS)
+        await page.goto('https://coworking.tyuiu.ru', timeout=timeout)
         await page.evaluate(
             f"""
             document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
@@ -129,7 +129,7 @@ async def get_schedule_for_group(
             html = await make_html_request(
                 json_dict.get(obj),
                 ClientTimeout(timeout))
-            
+
             if 'lenta_m' not in html:
                 return handle_timeout(request, obj)
 
@@ -162,7 +162,7 @@ async def get_schedule_for_other(
                 url=json_dict.get(obj),
                 timeout=timeout
             )
-            
+
             #html = await make_html_request(
             #    url=json_dict.get(obj),
             #    timeout=ClientTimeout(timeout),
