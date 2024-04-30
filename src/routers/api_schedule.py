@@ -10,6 +10,8 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from playwright.async_api import async_playwright
+from urllib.parse import urlparse, urljoin
+import re
 
 from constants import SCHEDULE_GROUP_HEADERS, SCHEDULE_LECTURERS_HEADERS
 from exceptions import CollegeWebsiteError
@@ -30,11 +32,21 @@ regex = re.compile(
 
 async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
-        browser = await context.webkit.launch()
-        page = await browser.new_page(java_script_enabled=False)
+        browser = await context.webkit.launch(headless=False)
+        page = await browser.new_page()
+        await page.goto('https://coworking.tyuiu.ru', timeout=timeout)
         await page.set_extra_http_headers(SCHEDULE_LECTURERS_HEADERS)
-        await page.goto(url, timeout=timeout)
-        html = r''.join(await page.content())
+        await page.evaluate(
+            f"""
+            document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
+            """
+        )
+        frame = page.frame(name='new_frame')
+        while frame is None:
+            await asyncio.sleep(1)
+            frame = page.frame(name='new_frame')
+        await frame.wait_for_load_state()
+        html = r''.join(await frame.content())
         return regex.sub('', html)
 
 
@@ -43,7 +55,16 @@ async def make_html_request(
         timeout: ClientTimeout,
         headers: dict[str, str] = SCHEDULE_GROUP_HEADERS) -> str:
 
-    async with ClientSession(headers=headers, timeout=timeout) as session:
+    copied_headers = {x: y for x, y in headers.items()}
+    referer_url = urljoin(url, urlparse(url).path)
+    group_otd = re.findall(
+        pattern=r'(?<=shs\/)(.*?)(?=_t)',
+        string=referer_url
+    )[0]
+    referer_url = referer_url.replace('sh.php', f'{group_otd}.php')
+    copied_headers['referer'] = referer_url
+
+    async with ClientSession(headers=copied_headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
             html = r''.join(await response.text())
             return regex.sub('', html)
@@ -108,7 +129,7 @@ async def get_schedule_for_group(
             html = await make_html_request(
                 json_dict.get(obj),
                 ClientTimeout(timeout))
-
+            
             if 'lenta_m' not in html:
                 return handle_timeout(request, obj)
 

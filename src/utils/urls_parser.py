@@ -22,8 +22,6 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
             await page.goto('https://mnokol.tyuiu.ru/site/', timeout=0)
             await page.evaluate(
                 f"""
-                var spn = document.createElement('iframe');
-                spn.src = '{url}';
                 document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
                 """
             )
@@ -31,7 +29,7 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
             while frame is None:
                 await asyncio.sleep(1)
                 frame = page.frame(name='new_frame')
-            await frame.wait_for_load_state('networkidle')
+            await frame.wait_for_load_state()
             html = await frame.content()
             yield html, url
 

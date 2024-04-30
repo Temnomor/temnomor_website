@@ -23,7 +23,7 @@ SCHEDULE_GROUP_HEADERS = {
     'cache-control': 'no-cache',
     'pragma': 'no-cache',
     'priority': 'u=0, i',
-    'referer': 'https://coworking.tyuiu.ru/shs/ngo_t/ngo.php',
+    'referer': '!!!needs_to_be_unique_for_each_group_all_the_time!!!',
     'sec-ch-ua': '"Chromium";v="124", "Microsoft Edge";v="124", "Not-A.Brand";v="99"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
