@@ -78,7 +78,7 @@ async def parse_schedule_urls(
                 count = int(element_with_information.attrs.get('count'))
                 object_id = element.attrs.get('value')
                 object_name = element.text
-                base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'open', group_base_url) + '?'
+                base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'sh', group_base_url) + '?'
                 url = f'{base_url}action=prep&prep={object_id}&vr=1&count={count}'
                 other_params = ''
                 for i in range(count):
