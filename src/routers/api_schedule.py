@@ -106,12 +106,13 @@ def cached_schedule_exists(filename: str, seconds: int) -> bool:
     return False
 
 
-def handle_timeout(request: Request, filename: str):
+def handle_timeout(request: Request, filename: str, html: str = None):
     if cached_schedule_exists(filename, 21600):
         return template_response(request, filename)
     else:
         raise CollegeWebsiteError(
-            "Timeout exceeded and there is no cached schedule or it's too old")
+            'Timeout exceeded and there is no cached schedule or it`s too old. Or "lenta_m" not in html'
+            f'\n\nHTML:\n\n{html}')
 
 
 async def get_schedule_for_group(
@@ -131,7 +132,7 @@ async def get_schedule_for_group(
                 ClientTimeout(timeout))
 
             if 'lenta_m' not in html:
-                return handle_timeout(request, obj)
+                return handle_timeout(request, obj, html)
 
         except asyncio.TimeoutError:
             return handle_timeout(request, obj)
@@ -151,7 +152,7 @@ async def get_schedule_for_other(
 ):
     api_url = f'{request.base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
-    json_dict_keys = json_dict.keys()
+    json_dict_keys = json_dict.keys()       
 
     if obj in json_dict_keys:
         try:
@@ -170,7 +171,7 @@ async def get_schedule_for_other(
             #)
 
             if 'lenta_m' not in html:
-                return handle_timeout(request, obj)
+                return handle_timeout(request, obj, html)
 
         except asyncio.TimeoutError:
             return handle_timeout(request, obj)

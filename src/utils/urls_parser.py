@@ -124,7 +124,7 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
 
     async for html, url in gen:
         while not any(group in html for group in ('(9)', '(11)')):
-            logger.warning('Groups not found in HTML! Trying again...')
+            logger.warning(f'Groups not found in HTML! Trying again...\n\nHTML:\n\n{html}')
             await asyncio.sleep(sleep_delay)
             gen = get_schedule_urls_html()
 
@@ -141,7 +141,7 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
     gen = get_schedule_urls_html(['https://coworking.tyuiu.ru/shs/prep/prep.php'])
     async for html, url in gen:
         while 'prep0' not in html:
-            logger.warning('Lecturers not found in HTML! Trying again...')
+            logger.warning(f'Lecturers not found in HTML! Trying again...\n\nHTML:\n\n{html}')
             await asyncio.sleep(sleep_delay)
             gen = await get_schedule_urls_html()
 
