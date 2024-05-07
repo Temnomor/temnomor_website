@@ -69,7 +69,8 @@ async def parse_schedule_urls(
                             'vr': 1
                         }
                     )
-                    final_url = base_url + query_params
+                    new_base_url = 'https://coworking.tyuiu.ru/shs/all_t/sh.php?'
+                    final_url = new_base_url + query_params
                     parsed_urls[group_name] = final_url
         case 'preps':
             elements = remove_spaces_from_iter(soup.find(id='preps').children)
