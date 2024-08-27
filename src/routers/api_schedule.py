@@ -54,17 +54,7 @@ async def make_html_request(
         url: str,
         timeout: ClientTimeout,
         headers: dict[str, str] = SCHEDULE_GROUP_HEADERS) -> str:
-
-    copied_headers = {x: y for x, y in headers.items()}
-    referer_url = urljoin(url, urlparse(url).path)
-    group_otd = re.findall(
-        pattern=r'(?<=shs\/)(.*?)(?=_t)',
-        string=referer_url
-    )[0]
-    referer_url = referer_url.replace('sh.php', f'{group_otd}.php')
-    copied_headers['referer'] = referer_url
-
-    async with ClientSession(headers=copied_headers, timeout=timeout) as session:
+    async with ClientSession(headers=headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
             html = r''.join(await response.text())
             return regex.sub('', html)
@@ -152,7 +142,7 @@ async def get_schedule_for_other(
 ):
     api_url = f'{request.base_url}api/{api_endpoint}'
     json_dict = await make_json_request(api_url)
-    json_dict_keys = json_dict.keys()       
+    json_dict_keys = json_dict.keys()
 
     if obj in json_dict_keys:
         try:
