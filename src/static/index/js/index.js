@@ -249,11 +249,11 @@ async function loadSchedule()
 function place_top_groups_on_top() // ;)))))
 {
     let groups_list = document.querySelector('#groups_list');
-    let pkst_20_9_2 = document.getElementById('ПКСт-20-(9)-2');
+    //let pkst_20_9_2 = document.getElementById('ПКСт-20-(9)-2'); ;((((
     let ispt_21_9_1 = document.getElementById('ИСПт-21-(9)-1');
     
     groups_list.insertAdjacentElement('afterbegin', ispt_21_9_1);
-    groups_list.insertAdjacentElement('afterbegin', pkst_20_9_2);
+    //groups_list.insertAdjacentElement('afterbegin', pkst_20_9_2); ;((((
 }
 
 function copyToClipboard(elem)
