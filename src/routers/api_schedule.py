@@ -52,9 +52,11 @@ async def playwright_get_html(url: str, timeout: Seconds):
 
 async def make_html_request(
         url: str,
-        timeout: ClientTimeout,
-        headers: dict[str, str] = SCHEDULE_GROUP_HEADERS) -> str:
-    async with ClientSession(headers=headers, timeout=timeout) as session:
+        referer_url: str,
+        timeout: ClientTimeout,) -> str:
+    updated_headers = {x: y for x, y in SCHEDULE_GROUP_HEADERS.items()}
+    updated_headers['referer'] = referer_url
+    async with ClientSession(headers=updated_headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
             html = r''.join(await response.text())
             return regex.sub('', html)
@@ -116,10 +118,14 @@ async def get_schedule_for_group(
     json_dict_keys = json_dict.keys()
 
     if obj in json_dict_keys:
+        obj_schedule_url = json_dict[obj]['schedule_url']
+        obj_referer = json_dict[obj]['referer']
         try:
             html = await make_html_request(
-                json_dict.get(obj),
-                ClientTimeout(timeout))
+                url=obj_schedule_url,
+                referer_url=obj_referer,
+                timeout=ClientTimeout(timeout)
+            )
 
             if 'lenta_m' not in html:
                 return handle_timeout(request, obj, html)

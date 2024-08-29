@@ -58,7 +58,7 @@ async def parse_schedule_urls(
                     gr = group_element.attrs.get('value')
                     year = group_element.attrs.get('year')
                     group_name = group_element.text
-                    
+
                     query_params = urlencode(
                         {
                             'action': 'group',
@@ -71,7 +71,10 @@ async def parse_schedule_urls(
                     )
                     new_base_url = 'https://coworking.tyuiu.ru/shs/all_t/sh.php?'
                     final_url = new_base_url + query_params
-                    parsed_urls[group_name] = final_url
+                    parsed_urls[group_name] = {
+                        'schedule_url': final_url,
+                        'referer': group_base_url
+                    }
         case 'preps':
             elements = remove_spaces_from_iter(soup.find(id='preps').children)
             element_with_information = soup.find(id='win_shed')
