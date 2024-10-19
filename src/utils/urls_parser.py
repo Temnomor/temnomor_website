@@ -83,7 +83,7 @@ async def parse_schedule_urls(
                     count = int(element_with_information.attrs.get('count'))
                     object_id = element.attrs.get('value')
                     object_name = element.text
-                    base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'shp', group_base_url) + '?'
+                    base_url = re.sub(r'(?<=\/)[a-z_]+(?=\.php)', 'sh', group_base_url) + '?'
                     base_url = base_url.replace('prep', 'all_t', 1)
                     url = f'{base_url}action=prep&prep={object_id}&vr=1&count={count}'
                     other_params = ''
@@ -145,7 +145,7 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
 
     gen = get_schedule_urls_html(['https://coworking.tyuiu.ru/shs/prep/prep.php'])
     async for html, url in gen:
-        while 'prep0' not in html:
+        while 'id="preps"' not in html:
             logger.warning(f'Lecturers not found in HTML! Trying again...\n\nHTML:\n\n{html}')
             await asyncio.sleep(sleep_delay)
             gen = await get_schedule_urls_html()
