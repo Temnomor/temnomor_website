@@ -14,9 +14,8 @@ def get_config() -> uvicorn.Config:
         'forwarded_allow_ips': '*'
     }
 
-    if platform.system().lower() == 'windows':
-        return uvicorn.Config(**uvicorn_config)
-    else:
+    if platform.system().lower() == 'linux':
         uvicorn_config['ssl_keyfile'] = SSL_KEYFILE_PATH
         uvicorn_config['ssl_certfile'] = SSL_CERTFILE_PATH
-        return uvicorn.Config(**uvicorn_config)
+
+    return uvicorn.Config(**uvicorn_config)
