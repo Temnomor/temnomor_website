@@ -53,6 +53,8 @@ function reload_window()
     window.location.reload();
 }
 
+document.documentElement.innerHTML = document.documentElement.innerHTML.replaceAll('font-size:10px', '');
+
 remove_trash();
 remove_trash();
 setInterval(reload_window, 300000);
