@@ -119,7 +119,7 @@ async def get_schedule_for_group(
 
     if obj in json_dict_keys:
         obj_schedule_url = json_dict[obj]['schedule_url']
-        obj_referer = json_dict[obj]['referer']
+        obj_referer = json_dict[obj]['schedule_url'] #json_dict[obj]['referer']
         try:
             html = await make_html_request(
                 url=obj_schedule_url,
