@@ -12,6 +12,7 @@ from fastapi.templating import Jinja2Templates
 from playwright.async_api import async_playwright
 from urllib.parse import urlparse, urljoin
 import re
+from utils import get_random_useragent
 
 from constants import SCHEDULE_GROUP_HEADERS, SCHEDULE_LECTURERS_HEADERS
 from exceptions import CollegeWebsiteError
@@ -34,6 +35,7 @@ async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
+        SCHEDULE_LECTURERS_HEADERS['user-agent'] = get_random_useragent()
         await page.set_extra_http_headers(SCHEDULE_LECTURERS_HEADERS)
         await page.goto('https://coworking.tyuiu.ru', timeout=timeout)
         await page.evaluate(
@@ -56,6 +58,7 @@ async def make_html_request(
         timeout: ClientTimeout,) -> str:
     updated_headers = {x: y for x, y in SCHEDULE_GROUP_HEADERS.items()}
     updated_headers['referer'] = referer_url
+    updated_headers['user-agent'] = get_random_useragent()
     async with ClientSession(headers=updated_headers, timeout=timeout) as session:
         async with session.get(url, ssl=False) as response:
             html = r''.join(await response.text())

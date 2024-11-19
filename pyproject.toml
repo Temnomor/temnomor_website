@@ -20,6 +20,7 @@ beautifulsoup4 = "^4.12.3"
 aiofile = "^3.8.8"
 lxml = "^5.1.0"
 orjson = "^3.9.12"
+fake-useragent = "^1.5.1"
 
 
 [build-system]

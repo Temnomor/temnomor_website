@@ -9,6 +9,7 @@ from loguru import logger
 import re
 from playwright.async_api import async_playwright
 from urllib.parse import urlencode
+from utils import get_random_useragent
 
 import constants
 
@@ -18,6 +19,7 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
         browser = await context.webkit.launch()
         page = await browser.new_page()
         for url in urls:
+            constants.SCHEDULE_FORM_HEADERS['user-agent'] = get_random_useragent()
             await page.set_extra_http_headers(constants.SCHEDULE_FORM_HEADERS)
             await page.goto('https://mnokol.tyuiu.ru/site/', timeout=0)
             await page.evaluate(
