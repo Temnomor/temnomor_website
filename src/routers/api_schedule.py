@@ -124,11 +124,15 @@ async def get_schedule_for_group(
         obj_schedule_url = json_dict[obj]['schedule_url']
         obj_referer = json_dict[obj]['schedule_url'] #json_dict[obj]['referer']
         try:
-            html = await make_html_request(
-                url=obj_schedule_url,
-                referer_url=obj_referer,
-                timeout=ClientTimeout(timeout)
-            )
+            for _ in range(5):
+                html = await make_html_request(
+                    url=obj_schedule_url,
+                    referer_url=obj_referer,
+                    timeout=ClientTimeout(timeout)
+                )
+                if 'lenta_m' in html:
+                    break
+                await asyncio.sleep(1)
 
             if 'lenta_m' not in html:
                 return handle_timeout(request, obj, html)
@@ -158,10 +162,14 @@ async def get_schedule_for_other(
             if cached_schedule_exists(obj, cache_since):
                 return template_response(request, obj)
 
-            html = await playwright_get_html(
-                url=json_dict.get(obj),
-                timeout=timeout
-            )
+            for _ in range(5):
+                html = await playwright_get_html(
+                    url=json_dict.get(obj),
+                    timeout=timeout
+                )
+                if 'lenta_m' in html:
+                    break
+                await asyncio.sleep(1)
 
             #html = await make_html_request(
             #    url=json_dict.get(obj),
