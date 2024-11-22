@@ -1,6 +1,5 @@
 import asyncio
 from functools import partial
-from typing import Self
 
 from loguru import logger
 from playwright.async_api import Request, async_playwright
