@@ -9,7 +9,7 @@ from loguru import logger
 import re
 from playwright.async_api import async_playwright
 from urllib.parse import urlencode
-from utils import get_random_useragent
+from utils import get_random_useragent, SingleHttpHeadersConstants
 
 import constants
 
@@ -19,19 +19,10 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
         browser = await context.webkit.launch()
         page = await browser.new_page()
         for url in urls:
-            constants.SCHEDULE_FORM_HEADERS['user-agent'] = get_random_useragent()
-            await page.set_extra_http_headers(constants.SCHEDULE_FORM_HEADERS)
-            await page.goto('https://mnokol.tyuiu.ru/site/', timeout=0)
-            await page.evaluate(
-                f"""
-                document.documentElement.innerHTML = document.documentElement.innerHTML + '<iframe name="new_frame" src="{url}"></iframe>';
-                """
-            )
-            frame = page.frame(name='new_frame')
-            while frame is None:
-                await asyncio.sleep(1)
-                frame = page.frame(name='new_frame')
-            await frame.wait_for_load_state()
+            SingleHttpHeadersConstants().group_list_headers['user-agent'] = get_random_useragent()
+            await page.set_extra_http_headers(SingleHttpHeadersConstants().group_list_headers)
+            await page.goto(url)
+            frame = page.frames[-1]
             html = await frame.content()
             yield html, url
 
@@ -132,6 +123,8 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
     async for html, url in gen:
         while not any(group in html for group in ('(9)', '(11)')):
             logger.warning(f'Groups not found in HTML! Trying again...\n\nHTML:\n\n{html}')
+            sleep_delay = 5
+            SingleHttpHeadersConstants().group_list_headers['user-agent'] = get_random_useragent()
             await asyncio.sleep(sleep_delay)
             gen = get_schedule_urls_html()
 
@@ -145,7 +138,7 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
     await dump_parsed_urls_to_json_file(all_parsed_urls, filename)
     logger.success('The groups were successfully parsed')
 
-    gen = get_schedule_urls_html(['https://coworking.tyuiu.ru/shs/prep/prep.php'])
+    gen = get_schedule_urls_html(['https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1247&Itemid=304'])
     async for html, url in gen:
         while 'id="preps"' not in html:
             logger.warning(f'Lecturers not found in HTML! Trying again...\n\nHTML:\n\n{html}')

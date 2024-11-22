@@ -10,12 +10,9 @@ from fastapi import APIRouter, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from playwright.async_api import async_playwright
-from urllib.parse import urlparse, urljoin
-import re
-from utils import get_random_useragent
 
-from constants import SCHEDULE_GROUP_HEADERS, SCHEDULE_LECTURERS_HEADERS
 from exceptions import CollegeWebsiteError
+from utils import get_random_useragent, SingleHttpHeadersConstants
 
 
 router = APIRouter(prefix='/api')
@@ -35,8 +32,8 @@ async def playwright_get_html(url: str, timeout: Seconds):
     async with async_playwright() as context:
         browser = await context.webkit.launch()
         page = await browser.new_page()
-        SCHEDULE_LECTURERS_HEADERS['user-agent'] = get_random_useragent()
-        await page.set_extra_http_headers(SCHEDULE_LECTURERS_HEADERS)
+        SingleHttpHeadersConstants().lecturers_headers['user-agent'] = get_random_useragent()
+        await page.set_extra_http_headers(SingleHttpHeadersConstants().lecturers_headers)
         await page.goto('https://coworking.tyuiu.ru', timeout=timeout)
         await page.evaluate(
             f"""
@@ -56,7 +53,7 @@ async def make_html_request(
         url: str,
         referer_url: str,
         timeout: ClientTimeout,) -> str:
-    updated_headers = {x: y for x, y in SCHEDULE_GROUP_HEADERS.items()}
+    updated_headers = {x: y for x, y in SingleHttpHeadersConstants().group_headers.items()}
     updated_headers['referer'] = referer_url
     updated_headers['user-agent'] = get_random_useragent()
     async with ClientSession(headers=updated_headers, timeout=timeout) as session:
@@ -174,7 +171,7 @@ async def get_schedule_for_other(
             #html = await make_html_request(
             #    url=json_dict.get(obj),
             #    timeout=ClientTimeout(timeout),
-            #    headers=SCHEDULE_LECTURERS_HEADERS
+            #    headers=SCHEDULE_LECTURERS_HEADERS??!
             #)
 
             if 'lenta_m' not in html:

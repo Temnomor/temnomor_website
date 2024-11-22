@@ -13,6 +13,7 @@ from loguru import logger
 from constants import LOGGER_FORMAT_TELEGRAM_BOT
 from exceptions import exception_handlers_dict
 from routers import api_routers
+from utils import SingleHttpHeadersConstants
 from utils.logging_handler import log_to_telegram_bot
 from utils.urls_parser import start_parsing_urls
 from uvicorn_config import get_config
@@ -24,6 +25,10 @@ app = FastAPI(
     redoc_url=None,
     debug=False
 )
+
+
+http_headers_setter = SingleHttpHeadersConstants()
+
 
 for router in api_routers:
     app.include_router(router)
@@ -52,6 +57,13 @@ async def run_server() -> NoReturn:
 
 
 @logger.catch
+async def parse_all_http_headers():
+    await http_headers_setter.set_group_list_headers()
+    await http_headers_setter.set_group_headers()
+    await http_headers_setter.set_lecturers_headers()
+
+
+@logger.catch
 async def main() -> None:
     arg_parser = ArgumentParser()
     arg_parser.add_argument('-p', '--parse_links', action='store_true')
@@ -60,6 +72,7 @@ async def main() -> None:
 
     scheduler = AsyncIOScheduler()
     scheduler.add_job(start_parsing_urls, 'interval', hours=6)
+    scheduler.add_job(parse_all_http_headers, 'interval', hours=5)
 
     logger.add(
         sink=log_to_telegram_bot,
@@ -70,6 +83,8 @@ async def main() -> None:
     try:
         if not os.path.exists('temp'):
             os.mkdir('temp')
+
+        await parse_all_http_headers()
 
         if parse_links:
             logger.info('-p | --parse_links flag detected!')
