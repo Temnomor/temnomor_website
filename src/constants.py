@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 
@@ -9,69 +10,16 @@ PROJECT_NAME = 'TEMNOMOR WEBSITE'
 
 
 SCHEDULE_FORMS_URLS = (
-    'https://coworking.tyuiu.ru/shs/aies_t/aies.php',
-    'https://coworking.tyuiu.ru/shs/mpn_t/mpn.php',
-    'https://coworking.tyuiu.ru/shs/ngo_t/ngo.php',
-    'https://coworking.tyuiu.ru/shs/sonh_po_t/sonh_po.php',
-    'https://coworking.tyuiu.ru/shs/zo_t/zo.php'
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1583&Itemid=299',
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1301&Itemid=300',
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1300&Itemid=301',
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1302&Itemid=302',
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1283&Itemid=305'
 )
 
+GROUP_LIST_URL = 'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1583&Itemid=299'
 
-SCHEDULE_GROUP_HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-    'cache-control': 'no-cache',
-    'dnt': '1',
-    'pragma': 'no-cache',
-    'priority': 'u=0, i',
-    'referer': '!!!SHOULD_BE_UNIQUE_SEE_COMMENT',#'https://coworking.tyuiu.ru/shs/all_t/sh.php?action=group&union=0&sid=296&gr=726&year=2024&vr=1',
-    'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'same-origin',
-    'sec-fetch-user': '?1',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
-}
-
-SCHEDULE_FORM_HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-    'cache-control': 'no-cache',
-    'dnt': '1',
-    'pragma': 'no-cache',
-    'priority': 'u=0, i',
-    'referer': 'https://mnokol.tyuiu.ru/',
-    'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'iframe',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'same-site',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
-}
-
-SCHEDULE_LECTURERS_HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
-    'cache-control': 'no-cache',
-    'dnt': '1',
-    'pragma': 'no-cache',
-    'priority': 'u=0, i',
-    'referer': 'https://coworking.tyuiu.ru/shs/prep/prep.php',
-    'sec-ch-ua': '"Microsoft Edge";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'document',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'same-origin',
-    'sec-fetch-user': '?1',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0',
-}
+LECTURERS_LIST_URL = 'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1247&Itemid=304'
 
 
 HOST_PORT = int(os.getenv('HOST_PORT', 8081))
