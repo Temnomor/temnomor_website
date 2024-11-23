@@ -121,7 +121,7 @@ async def get_schedule_for_group(
         obj_schedule_url = json_dict[obj]['schedule_url']
         obj_referer = json_dict[obj]['schedule_url'] #json_dict[obj]['referer']
         try:
-            for _ in range(5):
+            for _ in range(10):
                 html = await make_html_request(
                     url=obj_schedule_url,
                     referer_url=obj_referer,
@@ -159,7 +159,7 @@ async def get_schedule_for_other(
             if cached_schedule_exists(obj, cache_since):
                 return template_response(request, obj)
 
-            for _ in range(5):
+            for _ in range(10):
                 html = await playwright_get_html(
                     url=json_dict.get(obj),
                     timeout=timeout
