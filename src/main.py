@@ -85,6 +85,17 @@ async def main() -> None:
             os.mkdir('temp')
 
         await parse_all_http_headers()
+        
+        while not all(
+            (
+                SingleHttpHeadersConstants().group_list_headers,
+                SingleHttpHeadersConstants().group_headers,
+                SingleHttpHeadersConstants().lecturers_headers
+            )
+        ):
+            logger.warning('Error during parsing request headers. Trying again...')
+            await parse_all_http_headers()
+            await asyncio.sleep(15)
 
         if parse_links:
             logger.info('-p | --parse_links flag detected!')
