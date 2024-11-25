@@ -71,8 +71,8 @@ async def main() -> None:
     parse_links = args.parse_links
 
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(start_parsing_urls, 'interval', hours=6)
-    scheduler.add_job(parse_all_http_headers, 'interval', hours=5)
+    scheduler.add_job(start_parsing_urls, 'interval', hours=6, max_instances=1)
+    scheduler.add_job(parse_all_http_headers, 'interval', hours=5, max_instances=1)
 
     logger.add(
         sink=log_to_telegram_bot,

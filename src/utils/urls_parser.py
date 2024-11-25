@@ -123,7 +123,6 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
     async for html, url in gen:
         while not any(group in html for group in ('(9)', '(11)')):
             logger.warning(f'Groups not found in HTML! Trying again...\n\nHTML:\n\n{html}')
-            sleep_delay = 5
             SingleHttpHeadersConstants().group_list_headers['user-agent'] = get_random_useragent()
             await asyncio.sleep(sleep_delay)
             gen = get_schedule_urls_html()
