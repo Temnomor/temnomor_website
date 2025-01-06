@@ -22,6 +22,7 @@ async def get_schedule_urls_html(urls: list[str] = constants.SCHEDULE_FORMS_URLS
             SingleHttpHeadersConstants().group_list_headers['user-agent'] = get_random_useragent()
             await page.set_extra_http_headers(SingleHttpHeadersConstants().group_list_headers)
             await page.goto(url)
+            await asyncio.sleep(3)
             frame = page.frames[-1]
             html = await frame.content()
             yield html, url
