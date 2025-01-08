@@ -14,7 +14,7 @@ SCHEDULE_FORMS_URLS = (
     'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1301&Itemid=300',
     'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1300&Itemid=301',
     'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1302&Itemid=302',
-    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1283&Itemid=305'
+    'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1584&Itemid=303'
 )
 
 GROUP_LIST_URL = 'https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1583&Itemid=299'
