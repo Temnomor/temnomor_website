@@ -138,20 +138,20 @@ async def start_parsing_urls(sleep_delay: int | float = 3000):
     await dump_parsed_urls_to_json_file(all_parsed_urls, filename)
     logger.success('The groups were successfully parsed')
 
-    gen = get_schedule_urls_html(['https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1247&Itemid=304'])
-    async for html, url in gen:
-        while 'id="preps"' not in html:
-            logger.warning(f'Lecturers not found in HTML! Trying again...\n\nHTML:\n\n{html}')
-            await asyncio.sleep(sleep_delay)
-            gen = await get_schedule_urls_html()
+    #gen = get_schedule_urls_html(['https://mnokol.tyuiu.ru/site/index.php?option=com_content&view=article&id=1247&Itemid=304'])
+    #async for html, url in gen:
+    #    while 'id="preps"' not in html:
+    #        logger.warning(f'Lecturers not found in HTML! Trying again...\n\nHTML:\n\n{html}')
+    #        await asyncio.sleep(sleep_delay)
+    #        gen = await get_schedule_urls_html()
 
-        parsed_urls, filename = await parse_schedule_urls(
-            html=html,
-            to_parse='preps',
-            group_base_url=url
-        )
-        await dump_parsed_urls_to_json_file(parsed_urls, filename)
-        logger.success('The lecturers were successfully parsed')
+    #    parsed_urls, filename = await parse_schedule_urls(
+    #        html=html,
+    #        to_parse='preps',
+    #        group_base_url=url
+    #    )
+    #    await dump_parsed_urls_to_json_file(parsed_urls, filename)
+    #    logger.success('The lecturers were successfully parsed')
 
     # parsed_urls, filename = await parse_schedule_urls(html, to_parse='academic_calendar')
     # await dump_parsed_urls_to_json_file(parsed_urls, filename)
